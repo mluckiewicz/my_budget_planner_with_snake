@@ -1,6 +1,11 @@
 from django.contrib import admin
-from .models import Categories, Transactions, Types, Frequencies, RepeatableTransactions
-
+from .models import (
+    Types,
+    Categories,
+    Budgets,
+    RepeatableTransactions,
+    Transactions
+)
 
 @admin.register(Types)
 class TypesAdmin(admin.ModelAdmin):
@@ -15,24 +20,13 @@ class CategoriesAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(Transactions)
-class TransactionsAdmin(admin.ModelAdmin):
+@admin.register(Budgets)
+class BudgetsAdmin(admin.ModelAdmin):
     list_display = (
-        "user",
-        "category",
-        "description",
+        "budget_name",
         "amount",
-        "transaction_type",
-        "is_repatable",
-        "created",
-        "updated",
-    )
-
-
-@admin.register(Frequencies)
-class FrequenciesAdmin(admin.ModelAdmin):
-    list_display = (
-        "frequency_name",
+        "start_date",
+        "end_date"
     )
     
     
@@ -42,8 +36,25 @@ class RepeatableTransactionsAdmin(admin.ModelAdmin):
         "user",
         "start_date",
         "end_date",
-        "transaction_type",
+        "base_amout",
+        "recurrence_type",
+        "recurrence_value",
         "category",
-        "frequency",
-        
+        "type",
+        "budget"
     )
+
+
+@admin.register(Transactions)
+class TransactionsAdmin(admin.ModelAdmin):
+    list_display = (
+        "user",
+        "type",
+        "category",
+        "description",
+        "amount",
+        "budget",
+        "created",
+        "updated",
+    )
+
