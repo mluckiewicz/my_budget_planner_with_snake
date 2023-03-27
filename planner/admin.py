@@ -54,6 +54,8 @@ class TransactionsAdmin(admin.ModelAdmin):
         "description",
         "amount",
         "budget",
+        "execution_date",
+        "is_executed",
         "created",
         "updated",
     )
