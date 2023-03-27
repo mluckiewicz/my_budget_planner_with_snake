@@ -8,5 +8,9 @@ urlpatterns = [
     path('index/', views.index, name='index'),
     path('register/',views.register,name='register'),
     path('add_transaction_single/',views.register,name='add_transaction_single'),
+    path('add_transaction_repeatable/', views.register, name='add_transaction_repeatable'),
+
+
+
 
     ]
