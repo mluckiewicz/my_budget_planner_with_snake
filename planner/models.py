@@ -7,6 +7,11 @@ from django.utils.translation import gettext as _
 class Type(models.Model):
     # Fields
     type_name = models.CharField(max_length=20, unique=True)
+    
+    # Meta class
+    class Meta: 
+        verbose_name = "Type"
+        verbose_name_plural = "Types"
 
     # Methods
     def __str__(self):
@@ -17,6 +22,11 @@ class Category(models.Model):
     # Fields
     category_name = models.CharField(max_length=255, null=False)
     type = models.ForeignKey(Type, on_delete=models.CASCADE)
+
+    # Meta class
+    class Meta: 
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
 
     # Methods
     def __str__(self):
@@ -30,6 +40,11 @@ class Budget(models.Model):
     start_date = models.DateField(default=timezone.now, null=False)
     end_date = models.DateField(default=timezone.now, null=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    # Meta class
+    class Meta: 
+        verbose_name = "Budget"
+        verbose_name_plural = "Budgets"
 
     # Methods
     def __str__(self):
@@ -46,7 +61,7 @@ class RepeatableTransaction(models.Model):
         ANNUALLY = "ANNUALLY", _("Annually")
 
     # Fields
-    description = models.CharField(max_length=255)
+    description = models.CharField(max_length=255, blank=True)
     base_amout = models.DecimalField(max_digits=10, decimal_places=2, null=False)
     start_date = models.DateField(default=timezone.now, null=False)
     end_date = models.DateField(default=timezone.now, null=False)
@@ -58,9 +73,16 @@ class RepeatableTransaction(models.Model):
     )
     recurrence_value = models.IntegerField(default=1, null=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, default=None)
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE, default=None, null=False
+    )
     type = models.ForeignKey(Type, on_delete=models.CASCADE, default=None)
     budget = models.ForeignKey(Budget, on_delete=models.CASCADE, default=None)
+    
+    # Meta class
+    class Meta: 
+        verbose_name = "RepeatableTransaction"
+        verbose_name_plural = "RepeatableTransactions"
 
     # Methods
     def __str__(self):
@@ -84,6 +106,11 @@ class Transaction(models.Model):
         RepeatableTransaction, null=True, on_delete=models.CASCADE
     )
     budget = models.ForeignKey(Budget, on_delete=models.CASCADE)
+    
+    # Meta class
+    class Meta: 
+        verbose_name = "Transaction"
+        verbose_name_plural = "Transactions"
 
     # Methods
     def __str__(self):
