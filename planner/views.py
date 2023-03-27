@@ -6,3 +6,6 @@ from django.http import HttpResponse
 
 def home(request):
     return HttpResponse("home - login page")
+
+def index(request):
+    return HttpResponse("main page - DASHBOARD")
