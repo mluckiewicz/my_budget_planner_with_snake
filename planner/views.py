@@ -14,3 +14,10 @@ def index(request):
 
 def register(request):
     return HttpResponse("user register page")
+
+
+def add_transaction_single(request):
+    return HttpResponse("New single transaction")
+
+# def reset_password(request):
+#     return HttpResponse("user register page")
