@@ -24,8 +24,15 @@ def add_transaction_repeatable(request):
     return HttpResponse("New repeatable transaction")
 
 def edit_transaction_single(request):
-    return HttpResponse("New single transaction")
+    return HttpResponse("Edit single transaction")
 
 
 def add_transaction_repeatable(request):
-    return HttpResponse("New repeatable transaction")
+    return HttpResponse("Edit repeatable transaction")
+
+
+def search(request):
+    return HttpResponse("search view - full table with data chooser")
+
+def calendar_view(request):
+    return HttpResponse("view transaction on calendar")

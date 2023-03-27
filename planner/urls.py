@@ -11,6 +11,7 @@ urlpatterns = [
     path('add_transaction_repeatable/', views.register, name='add_transaction_repeatable'),
     path('edit_transaction_single/', views.register, name='edit_transaction_single'),
     path('edit_transaction_repeatable/', views.register, name='edit_transaction_repeatable'),
+    path('search/', views.register, name='search'),
+    path('calendar_view/', views.register, name='calendar_view'),
 
-
-    ]
+]
