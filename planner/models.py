@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
 
 
-class Types(models.Model):
+class Type(models.Model):
     # Fields
     type_name = models.CharField(max_length=20, unique=True)
 
@@ -13,17 +13,17 @@ class Types(models.Model):
         return self.type_name
 
 
-class Categories(models.Model):
+class Category(models.Model):
     # Fields
     category_name = models.CharField(max_length=255, null=False)
-    type = models.ForeignKey(Types, on_delete=models.CASCADE)
+    type = models.ForeignKey(Type, on_delete=models.CASCADE)
 
     # Methods
     def __str__(self):
         return self.category_name
 
 
-class Budgets(models.Model):
+class Budget(models.Model):
     # Fields
     budget_name = models.CharField(max_length=255, null=False)
     amount = models.DecimalField(max_digits=10, decimal_places=2, null=False)
@@ -36,7 +36,7 @@ class Budgets(models.Model):
         return self.budget_name
 
 
-class RepeatableTransactions(models.Model):
+class RepeatableTransaction(models.Model):
     # Choises for recurrence_type field
     class RecurrenceTypes(models.TextChoices):
         DAILY = "DAILY", _("Daily")
@@ -58,16 +58,16 @@ class RepeatableTransactions(models.Model):
     )
     recurrence_value = models.IntegerField(default=1, null=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ForeignKey(Categories, on_delete=models.CASCADE, default=None)
-    type = models.ForeignKey(Types, on_delete=models.CASCADE, default=None)
-    budget = models.ForeignKey(Budgets, on_delete=models.CASCADE, default=None)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, default=None)
+    type = models.ForeignKey(Type, on_delete=models.CASCADE, default=None)
+    budget = models.ForeignKey(Budget, on_delete=models.CASCADE, default=None)
 
     # Methods
     def __str__(self):
         return self.description
 
 
-class Transactions(models.Model):
+class Transaction(models.Model):
     # Fields
     description = models.CharField(max_length=255, blank=False, null=False)
     amount = models.DecimalField(
@@ -78,12 +78,12 @@ class Transactions(models.Model):
     execution_date = models.DateField(auto_now=True)
     is_executed = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ForeignKey(Categories, on_delete=models.CASCADE, default=None)
-    type = models.ForeignKey(Types, on_delete=models.CASCADE, default=None)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, default=None)
+    type = models.ForeignKey(Type, on_delete=models.CASCADE, default=None)
     repeatable_transaction = models.ForeignKey(
-        RepeatableTransactions, null=True, on_delete=models.CASCADE
+        RepeatableTransaction, null=True, on_delete=models.CASCADE
     )
-    budget = models.ForeignKey(Budgets, on_delete=models.CASCADE)
+    budget = models.ForeignKey(Budget, on_delete=models.CASCADE)
 
     # Methods
     def __str__(self):

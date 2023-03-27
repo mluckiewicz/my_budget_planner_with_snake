@@ -1,18 +1,18 @@
 from django.contrib import admin
 from .models import (
-    Types,
-    Categories,
-    Budgets,
-    RepeatableTransactions,
-    Transactions
+    Type,
+    Category,
+    Budget,
+    RepeatableTransaction,
+    Transaction
 )
 
-@admin.register(Types)
+@admin.register(Type)
 class TypesAdmin(admin.ModelAdmin):
     list_display = ("type_name",)
 
 
-@admin.register(Categories)
+@admin.register(Category)
 class CategoriesAdmin(admin.ModelAdmin):
     list_display = (
         "category_name",
@@ -20,7 +20,7 @@ class CategoriesAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(Budgets)
+@admin.register(Budget)
 class BudgetsAdmin(admin.ModelAdmin):
     list_display = (
         "budget_name",
@@ -30,7 +30,7 @@ class BudgetsAdmin(admin.ModelAdmin):
     )
     
     
-@admin.register(RepeatableTransactions)
+@admin.register(RepeatableTransaction)
 class RepeatableTransactionsAdmin(admin.ModelAdmin):
     list_display = (
         "user",
@@ -45,7 +45,7 @@ class RepeatableTransactionsAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(Transactions)
+@admin.register(Transaction)
 class TransactionsAdmin(admin.ModelAdmin):
     list_display = (
         "user",

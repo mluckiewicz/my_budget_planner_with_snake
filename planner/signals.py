@@ -1,10 +1,10 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .models import RepeatableTransactions, Transactions
+from .models import RepeatableTransaction, Transaction
 import datetime
 
 
-@receiver(post_save, sender=RepeatableTransactions)
+@receiver(post_save, sender=RepeatableTransaction)
 def create_repeatable_transactions(sender, instance, created, **kwargs):
     """ 
     Catches a signal to add a new record to the Recurring Transactions table. Based 
@@ -19,7 +19,7 @@ def create_repeatable_transactions(sender, instance, created, **kwargs):
             
             
             # Add new record 
-            transaction = Transactions.objects.create(
+            transaction = Transaction.objects.create(
                 description = instance.description,
                 amount = instance.base_amout,
                 execution_date = datetime.datetime.now().date(),
@@ -33,4 +33,4 @@ def create_repeatable_transactions(sender, instance, created, **kwargs):
             
             
  # Signal registration           
-post_save.connect(create_repeatable_transactions, sender=RepeatableTransactions)
+post_save.connect(create_repeatable_transactions, sender=RepeatableTransaction)
