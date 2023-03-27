@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
+from django.utils import timezone
 
 
 class Type(models.Model):
@@ -91,13 +92,13 @@ class RepeatableTransaction(models.Model):
 
 class Transaction(models.Model):
     # Fields
-    description = models.CharField(max_length=255, blank=False, null=False)
+    description = models.CharField(max_length=255, blank=True)
     amount = models.DecimalField(
         max_digits=10, decimal_places=2, blank=False, null=False
     )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    execution_date = models.DateField(auto_now=True)
+    execution_date = models.DateField(default=timezone.now)
     is_executed = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=None)
