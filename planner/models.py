@@ -1,3 +1,4 @@
+from djmoney.models.fields import MoneyField
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -8,9 +9,9 @@ from django.utils import timezone
 class Type(models.Model):
     # Fields
     type_name = models.CharField(max_length=20, unique=True)
-    
+
     # Meta class
-    class Meta: 
+    class Meta:
         verbose_name = "Type"
         verbose_name_plural = "Types"
 
@@ -25,7 +26,7 @@ class Category(models.Model):
     type = models.ForeignKey(Type, on_delete=models.CASCADE)
 
     # Meta class
-    class Meta: 
+    class Meta:
         verbose_name = "Category"
         verbose_name_plural = "Categories"
 
@@ -37,13 +38,15 @@ class Category(models.Model):
 class Budget(models.Model):
     # Fields
     budget_name = models.CharField(max_length=255, null=False)
-    amount = models.DecimalField(max_digits=10, decimal_places=2, null=False)
+    amount = MoneyField(
+        max_digits=10, decimal_places=2, null=False, default_currency="PLN"
+    )
     start_date = models.DateField(default=timezone.now, null=False)
     end_date = models.DateField(default=timezone.now, null=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    
+
     # Meta class
-    class Meta: 
+    class Meta:
         verbose_name = "Budget"
         verbose_name_plural = "Budgets"
 
@@ -63,7 +66,9 @@ class RepeatableTransaction(models.Model):
 
     # Fields
     description = models.CharField(max_length=255, blank=True)
-    base_amout = models.DecimalField(max_digits=10, decimal_places=2, null=False)
+    base_amout = MoneyField(
+        max_digits=10, decimal_places=2, null=False, default_currency="PLN"
+    )
     start_date = models.DateField(default=timezone.now, null=False)
     end_date = models.DateField(default=timezone.now, null=False)
     recurrence_type = models.CharField(
@@ -79,9 +84,9 @@ class RepeatableTransaction(models.Model):
     )
     type = models.ForeignKey(Type, on_delete=models.CASCADE, default=None)
     budget = models.ForeignKey(Budget, on_delete=models.CASCADE, default=None)
-    
+
     # Meta class
-    class Meta: 
+    class Meta:
         verbose_name = "RepeatableTransaction"
         verbose_name_plural = "RepeatableTransactions"
 
@@ -93,8 +98,8 @@ class RepeatableTransaction(models.Model):
 class Transaction(models.Model):
     # Fields
     description = models.CharField(max_length=255, blank=True)
-    amount = models.DecimalField(
-        max_digits=10, decimal_places=2, blank=False, null=False
+    amount = MoneyField(
+        max_digits=10, decimal_places=2, blank=False, null=False, default_currency="PLN"
     )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -104,12 +109,12 @@ class Transaction(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=None)
     type = models.ForeignKey(Type, on_delete=models.CASCADE, default=None)
     repeatable_transaction = models.ForeignKey(
-        RepeatableTransaction, null=True, on_delete=models.CASCADE
+        RepeatableTransaction, blank=True, null=True, on_delete=models.CASCADE
     )
     budget = models.ForeignKey(Budget, on_delete=models.CASCADE)
-    
+
     # Meta class
-    class Meta: 
+    class Meta:
         verbose_name = "Transaction"
         verbose_name_plural = "Transactions"
 
