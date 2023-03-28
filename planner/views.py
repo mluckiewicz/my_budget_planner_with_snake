@@ -1,19 +1,32 @@
 from django.shortcuts import render
+from django.contrib.auth.forms import UserCreationForm
+
 
 # Create your views here.
 from django.http import HttpResponse
+from .forms import CreateUserForm
 
 
-def home(request):
-    return HttpResponse("home - login page")
+def login(request):
+    # return HttpResponse("login page")
+    return render(request, 'planner/login.html')
+
+
+def register(request):
+    form = CreateUserForm()
+
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+    context = {'form': form}
+    return render(request, 'planner/register.html', context)
+    # return HttpResponse("user register page")
 
 
 def index(request):
     return HttpResponse("main page - DASHBOARD")
-
-
-def register(request):
-    return HttpResponse("user register page")
 
 
 def add_transaction_single(request):
