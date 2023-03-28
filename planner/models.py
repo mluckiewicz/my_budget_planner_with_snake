@@ -1,9 +1,10 @@
-from djmoney.models.fields import MoneyField
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
 from django.utils import timezone
+from djmoney.models.fields import MoneyField
+from djmoney.models.validators import MaxMoneyValidator, MinMoneyValidator
 
 
 class Type(models.Model):
@@ -39,7 +40,11 @@ class Budget(models.Model):
     # Fields
     budget_name = models.CharField(max_length=255, null=False)
     amount = MoneyField(
-        max_digits=10, decimal_places=2, null=False, default_currency="PLN"
+        max_digits=10,
+        decimal_places=2,
+        null=False,
+        default_currency="PLN",
+        validators=[MinMoneyValidator(0)],
     )
     start_date = models.DateField(default=timezone.now, null=False)
     end_date = models.DateField(default=timezone.now, null=False)
@@ -67,7 +72,11 @@ class RepeatableTransaction(models.Model):
     # Fields
     description = models.CharField(max_length=255, blank=True)
     base_amout = MoneyField(
-        max_digits=10, decimal_places=2, null=False, default_currency="PLN"
+        max_digits=10,
+        decimal_places=2,
+        null=False,
+        default_currency="PLN",
+        validators=[MinMoneyValidator(0)],
     )
     start_date = models.DateField(default=timezone.now, null=False)
     end_date = models.DateField(default=timezone.now, null=False)
@@ -99,7 +108,12 @@ class Transaction(models.Model):
     # Fields
     description = models.CharField(max_length=255, blank=True)
     amount = MoneyField(
-        max_digits=10, decimal_places=2, blank=False, null=False, default_currency="PLN"
+        max_digits=10,
+        decimal_places=2,
+        blank=False,
+        null=False,
+        default_currency="PLN",
+        validators=[MinMoneyValidator(0)],
     )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
