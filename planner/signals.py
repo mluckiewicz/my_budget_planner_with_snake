@@ -12,14 +12,12 @@ def create_repeatable_transactions(sender, instance, created, **kwargs):
     on the number of repetitions, adds the appropriate number of records to the 
     Transactions table.
     """
-
     if created:
         # Calculate execution date
         dc = DateCalculator(instance.start_date, instance.end_date)
         dates = dc.get_dates(instance.recurrence_type, instance.recurrence_value)
-        
-        for idx, value in enumerate(dates):
-            # Add new record 
+        # Add new records for each date
+        for _, value in enumerate(dates):
             transaction = Transaction.objects.create(
                 description = instance.description,
                 amount = instance.base_amout,
