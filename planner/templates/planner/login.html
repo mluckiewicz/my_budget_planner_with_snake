@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>First_page</title>
-</head>
-<body>
-    <h1>Login page<h1>
-</body>
-</html>
+<h2>Login</h2>
+
+<form method="POST" action="">
+    {% csrf_token %}
+
+    <input type="text" name="username" placeholder="Username..." class="form-control">
+    <input type="text" name="password" placeholder="Password..." class="form-control">
+
+
+    <input type="submit" name="Create User">
+
+
+</form>
