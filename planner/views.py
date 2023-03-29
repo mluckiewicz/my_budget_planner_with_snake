@@ -13,8 +13,8 @@ from .forms import CreateUserForm
 def login_page(request):
     # return HttpResponse("login page")
     if request.method == 'POST':
-        username = request.POST.get('email')
-        password = request.POST.get('password')
+        username = request.POST['username']
+        password = request.POST['password']
 
         user = authenticate(request, username=username, password=password)
 
@@ -22,11 +22,11 @@ def login_page(request):
             login(request, user)
             return redirect('home')
         else:
-            messages.info(request, 'User or password incorrect')
+            messages.info(request, 'email or password incorrect')
+            return redirect('login')
 
-
-    context = {}
-    return render(request, 'planner/login.html', context)
+    else:
+        return render(request, 'planner/login.html', {})
 
 
 def register_page(request):

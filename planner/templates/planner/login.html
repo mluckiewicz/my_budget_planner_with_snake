@@ -2,12 +2,13 @@
 
 <form method="POST" action="">
     {% csrf_token %}
+    <label>Username</label>
+    <input type="text" name="username"  class="form-control">
+    <label>Password</label>
+    <input type="text" name="password" class="form-control">
 
-    <input type="text" name="username" placeholder="Username..." class="form-control">
-    <input type="text" name="password" placeholder="Password..." class="form-control">
 
-
-    <input type="submit" name="Create User">
+    <input type="submit" name="Login">
 
 
 </form>
