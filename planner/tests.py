@@ -26,6 +26,17 @@ class TestDateCalculator(TestCase):
         self.assertEqual(dates[0], self.start_date.replace(day=recurrence_value)) # first date should be the start date with the day replaced by the recurrence value
         for i in range(1, len(dates)):
             self.assertEqual(dates[i].day, recurrence_value) # all other dates should have the recurrence value as the day
+            
+    def test_generate_monthly_dates_next_year(self):
+        start_date = datetime.date(2022, 11, 1)
+        end_date = datetime.date(2023, 1, 31)
+        dc = DateCalculator(start_date, end_date)
+        recurrence_value = 15 # 15th day of the month
+        dates = dc._generate_monthly_dates(recurrence_value)
+        self.assertEqual(len(dates), 3) # should generate 3 dates
+        self.assertEqual(dates[0], start_date.replace(day=recurrence_value)) # first date should be the start date with the day replaced by the recurrence value
+        for i in range(1, len(dates)):
+            self.assertEqual(dates[i].day, recurrence_value) # all other dates should have the recurrence value as the day
 
     def test_generate_quaterly_dates(self):
         # TODO add test for quarterly dates
