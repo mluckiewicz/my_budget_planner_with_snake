@@ -66,7 +66,7 @@ class DateCalculator:
             year = curr.year
             month = curr.month if curr.month < 12 else 1
             day = curr.day
-            next_date = datetime.date(year, month, day)
+            next_date = datetime.date(year, month + 1, day)
             dates.append(next_date)
         return dates
 
