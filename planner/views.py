@@ -23,12 +23,6 @@ def add_transaction_repeatable(request):
 def edit_transaction_single(request):
     return HttpResponse("Edit single transaction")
 
-
-
-def add_transaction_repeatable(request):
-    return HttpResponse("Edit repeatable transaction")
-
-
 def edit_transaction_repeatable(request):
     return HttpResponse("Edit single transaction")
 
