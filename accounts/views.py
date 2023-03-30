@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.utils.html import format_html
+
 from accounts.forms import CreateUserForm
 
 from django.contrib.auth.decorators import login_required
@@ -18,7 +20,7 @@ def login_page(request):
             login(request, user)
             return redirect('home')
         else:
-            messages.info(request, 'email or password incorrect')
+            messages.info(request, 'email or password incorrect - you can reset password below')
             return redirect('login')
 
     else:
