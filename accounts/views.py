@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from accounts.forms import CreateUserForm
 
+from django.contrib.auth.decorators import login_required
 
 def login_page(request):
     # return HttpResponse("login page")
@@ -39,4 +40,5 @@ def register_page(request):
 
 
 def logout_page(request):
+    logout(request)
     return redirect('login')
