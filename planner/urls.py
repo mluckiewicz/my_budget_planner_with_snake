@@ -5,6 +5,7 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('dashboard/',views.dashboard,name='dashboard'),
     path('add_transaction_single/',views.add_transaction_single,name='add_transaction_single'),
     path('add_transaction_repeatable/', views.add_transaction_repeatable, name='add_transaction_repeatable'),
     path('edit_transaction_single/', views.edit_transaction_single, name='edit_transaction_single'),

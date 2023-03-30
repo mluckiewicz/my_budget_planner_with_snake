@@ -18,7 +18,7 @@ def login_page(request):
 
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return redirect('dashboard')
         else:
             messages.info(request, 'email or password incorrect - you can reset password below')
             return redirect('login')
