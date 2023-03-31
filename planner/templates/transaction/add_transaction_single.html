@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div>
+        <form action="." method="post" class="row">
+            {% csrf_token %}
+            <div class="mb-2">
+                <label for="{{form.type.name}}" class="form-label">{{form.type.label}}</label>
+                {{form.type}}
+            </div>
+
+            <label for="{{form.category.name}}" class="form-label">{{form.category.label}}</label>
+            <div class="input-group mb-2">
+                {{form.category}}
+                <button class="btn btn-outline-secondary btn-sm">+</button>
+            </div>
+            
+            <label for="{{form.budget.name}}" class="form-label">{{form.budget.label}}</label>
+            <div class="input-group mb-2">
+                {{form.budget}}
+                <button class="btn btn-outline-secondary btn-sm">+</button>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+
+            
+        </form>
+
+    </div>
+</main>
+
+{% endblock content %}
