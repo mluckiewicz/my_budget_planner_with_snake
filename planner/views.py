@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
-
-from django.contrib.auth import authenticate, login, logout
+from .forms import SingleTransactionForm
 
 from django.contrib import messages
 
@@ -18,7 +16,17 @@ def dashboard(request):
 
 
 def add_transaction_single(request):
-    return HttpResponse("New single transaction")
+    if request.method == "POST":
+        form = SingleTransactionForm(request.POST)
+        if form.is_valid():
+            pass
+    else:
+        form = SingleTransactionForm()
+    return render(
+        request,
+        "transaction/add_transaction_single.html",
+        context={"form": form},
+    )
 
 
 def add_transaction_repeatable(request):
