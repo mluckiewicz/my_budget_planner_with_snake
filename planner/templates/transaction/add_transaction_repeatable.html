@@ -4,10 +4,8 @@
 
 {% block content %}
 
-<main class="container">
     <form action="." method="post">
         {% csrf_token %}
-
         <div class="row pb-2">
             <div class="col">
                 {{form.type.errors}}
@@ -15,7 +13,6 @@
                 {{form.type|add_class:"form-select"}}
             </div>
         </div>
-
         <div class="row pb-2">
             <div class="col">
                 {{form.base_amout.errors}}
@@ -25,7 +22,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row pb-2">
             <div class="col">
                 {{form.category.errors}}
@@ -36,7 +32,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row pb-2">
             <div class="col">
                 {{form.budget.errors}}
@@ -47,7 +42,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row pb-2">
             <div class="col col-6">
                 {{form.start_date.errors}}
@@ -89,18 +83,15 @@
                 </div>
             </div>
         </div>
-
         <div class="row pb-2">
             <div class="d-grid gap-2">
                 <button type="submit" class="btn btn-primary">Dodaj transakcję</button>
             </div>
         </div>
-
     </form>
-    </div>
-</main>
-<script src="{% static 'js/change_labels.js' %}"></script>
-<script>
-    changeLabelValue("id_{{form.recurrence_type.name}}", "label_{{form.recurrence_value.name}}", "id_{{form.recurrence_value.name}}")
-</script>
+    <script src="{% static 'js/change_labels.js' %}"></script>
+    <script>
+        changeLabelValue("id_{{form.recurrence_type.name}}", "label_{{form.recurrence_value.name}}", "id_{{form.recurrence_value.name}}")
+    </script>
+
 {% endblock content %}
