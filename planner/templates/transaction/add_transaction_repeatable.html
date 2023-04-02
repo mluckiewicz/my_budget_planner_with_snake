@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<main class="container">
+    <form action="." method="post">
+        {% csrf_token %}
+
+        <div class="row pb-2">
+            <div class="col">
+                {{form.type.errors}}
+                <label for="{{form.type.name}}" class="form-label">{{form.type.label}}</label>
+                {{form.type|add_class:"form-select"}}
+            </div>
+        </div>
+
+        <div class="row pb-2">
+            <div class="col">
+                {{form.base_amout.errors}}
+                <label for="{{form.base_amout.name}}" class="form-label">{{form.base_amout.label}}</label>
+                <div class="input-group">
+                    {{form.base_amout}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row pb-2">
+            <div class="col">
+                {{form.category.errors}}
+                <label for="{{form.category.name}}" class="form-label">{{form.category.label}}</label>
+                <div class="input-group">
+                    {{form.category|add_class:"form-select"}}
+                    <button class="btn btn-outline-secondary btn-sm">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row pb-2">
+            <div class="col">
+                {{form.budget.errors}}
+                <label for="{{form.budget.name}}" class="form-label">{{form.budget.label}}</label>
+                <div class="input-group">
+                    {{form.budget|add_class:"form-select"}}
+                    <button class="btn btn-outline-secondary btn-sm">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row pb-2">
+            <div class="col col-6">
+                {{form.start_date.errors}}
+                <label for="{{form.end_date.name}}" class="form-label">{{form.start_date.label}}</label>
+                <div class="">
+                    {{form.end_date|add_class:"form-control"|attr:"type:date"|attr:"placeholder:yyyy-mm-dd"}}
+                </div>
+            </div>
+            <div class="col col-6">
+                {{form.end_date.errors}}
+                <label for="{{form.end_date.name}}" class="form-label">{{form.end_date.label}}</label>
+                <div class="">
+                    {{form.end_date|add_class:"form-control"|attr:"type:date"|attr:"placeholder:yyyy-mm-dd"}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row pb-2">
+            <div class="col">
+                {{form.recurrence_type.errors}}
+                <label for="{{form.recurrence_type.name}}" class="form-label">{{form.recurrence_type.label}}</label>
+                <div class="">
+                    {{form.recurrence_type|add_class:"form-control"}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row pb-2">
+            <div class="col">
+                {{form.recurrence_value.errors}}
+                <label for="{{form.recurrence_value.name}}" class="form-label">{{form.recurrence_value.label}}</label>
+                <div class="">
+                    {{form.recurrence_value|add_class:"form-control"}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row pb-2">
+            <div class="col">
+                {{form.description.errors}}
+                <label for="{{form.description.name}}" class="form-label">{{form.description.label}}</label>
+                <div class="">
+                    {{form.description|add_class:"form-control"}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row pb-2">
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Dodaj transakcję</button>
+            </div>
+        </div>
+
+    </form>
+    </div>
+</main>
+
+{% endblock content %}
