@@ -1,18 +1,17 @@
 from django.urls import path
-from django.contrib.auth import views as auth_views
-
 from . import views
+
 
 urlpatterns = [
     path("", views.home, name="home"),
     path("dashboard/", views.dashboard, name="dashboard"),
     path(
-        "add_transaction_single/",
-        views.add_transaction_single,
+        "add_single/",
+        views.AddSingleTransactionView.as_view(),
         name="add_transaction_single",
     ),
     path(
-        "add_transaction_repeatable/",
+        "transactions/add_repeatable",
         views.add_transaction_repeatable,
         name="add_transaction_repeatable",
     ),
