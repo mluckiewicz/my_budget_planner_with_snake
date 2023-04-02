@@ -11,8 +11,8 @@ urlpatterns = [
         name="add_transaction_single",
     ),
     path(
-        "transactions/add_repeatable",
-        views.add_transaction_repeatable,
+        "add_repeatable/",
+        views.AddRepeatableTransactionView.as_view(),
         name="add_transaction_repeatable",
     ),
     path(
