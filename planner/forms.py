@@ -40,12 +40,14 @@ class AddSingleTransactionForm(forms.ModelForm):
                         "step":0.01,
                         "placeholder": _("Wprowadź kwotę"),
                         "class": "form-control"},
+                    
                 ),
                 currency_widget=forms.widgets.Select(
                     attrs={"class": "form-select"},
                     choices=currency_choices),
                 default_currency = "PLN"
-            ),
+                ),
+
             "description": forms.widgets.Textarea(attrs={"rows": "3"})
         }
 
