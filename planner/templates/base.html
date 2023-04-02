@@ -14,14 +14,16 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'dashboard' %}">Planner</a>
+            <a class="navbar-brand" href="{% url 'planner:dashboard' %}">Planner</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a class="nav-item nav-link active" href="{% url 'dashboard' %}">Dashboard</a>
+                    <a class="nav-item nav-link active" href="{% url 'planner:dashboard' %}">Dashboard</a>
+                    <a class="nav-item nav-link active" href="{% url 'planner:add_single' %}">Add single</a>
+                    <a class="nav-item nav-link active" href="{% url 'planner:add_repeatable' %}">Add repeatable</a>
                     <a class="nav-item nav-link active" href="{% url 'logout' %}">Logout</a>
                 </div>
             </div>
