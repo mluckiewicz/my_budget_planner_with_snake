@@ -1,59 +1,56 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from djmoney.forms.fields import MoneyField
 from djmoney.forms.widgets import MoneyWidget
-from .models import Type, Category, Budget, RepeatableTransaction
+from .models import RepeatableTransaction, Transaction
 
 
-class SingleTransactionForm(forms.Form):
-    currency_choices = (
-        ("PLN", "PLN"),
-        ("USD", "USD"),
-        ("EUR", "EUR"),
-    )
-
-    type = forms.ModelChoiceField(
-        queryset=Type.objects.all(),
-        required=True,
-        label=_("Typ"),
-    )
-    amount = MoneyField(
-        currency_widget=forms.widgets.Select(
-            attrs={"class": "form-select"},
-            choices=currency_choices,
-        ),
-        min_value=0,
-        max_digits=10,
-        decimal_places=2,
-        default_amount=0,
-        default_currency="PLN",
-        label=_("Kwota"),
-    )
-    category = forms.ModelChoiceField(
-        queryset=Category.objects.all(),
-        required=True,
-        label=_("Kategoria"),
-    )
-    budget = forms.ModelChoiceField(
-        queryset=Budget.objects.all(),
-        required=True,
-        label=_("Budżet"),
-    )
-    execution_date = forms.DateField(
-        required=True,
-        label=_("Data realizacji"),
-    )
-    is_executed = forms.BooleanField(
-        required=False,
-        label=_("Zrealizowa?"),
-    )
-    description = forms.CharField(
-        required=False, widget=forms.Textarea(attrs={"rows": "3"}),
-        label=_("Notatka"),
-    )
+class AddSingleTransactionForm(forms.ModelForm):
+    class Meta:
+        model = Transaction
+        currency_choices = (
+            ("PLN", "PLN"),
+            ("USD", "USD"),
+            ("EUR", "EUR"),
+        )
+        
+        fields = (
+            "description",
+            "amount",
+            "execution_date",
+            "is_executed",
+            "category",
+            "type",
+            "budget",
+        )
+        labels = {
+            "type": _("Typ"),
+            "amount": _("Kwota"),
+            "category": _("Kategoria"),
+            "budget": _("Budżet"),
+            "execution_date": _("Data realizacji"),
+            "is_executed": _("Zrealizowana?"),
+            "description": _("Opis")
+        }
+        widgets = {
+            "type": forms.widgets.Select(attrs={"required": True}),
+            "amount": MoneyWidget(
+                amount_widget=forms.widgets.NumberInput(
+                    attrs={
+                        "min":0,
+                        "step":0.01,
+                        "placeholder": _("Wprowadź kwotę"),
+                        "class": "form-control"},
+                ),
+                currency_widget=forms.widgets.Select(
+                    attrs={"class": "form-select"},
+                    choices=currency_choices),
+                default_currency = "PLN"
+            ),
+            "description": forms.widgets.Textarea(attrs={"rows": "3"})
+        }
 
 
-class RepeatableTransactionForm(forms.ModelForm):
+class AddRepeatableTransactionForm(forms.ModelForm):
     class Meta:
         model = RepeatableTransaction
         currency_choices = (
