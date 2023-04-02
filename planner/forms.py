@@ -77,8 +77,8 @@ class AddRepeatableTransactionForm(forms.ModelForm):
             "budget": _("Budżet"),
             "start_date": _("Od kiedy"),
             "end_date": _("Do kiedy"),
-            "recurrence_type": _("Rodzaj powtórzenia"),
-            "recurrence_value": _("Okres powtórzenia"),
+            "recurrence_type": _("Rodzaj cyklu"),
+            "recurrence_value": _("Długość cyklu"),
             "description": _("Opis")
         }
         widgets = {
