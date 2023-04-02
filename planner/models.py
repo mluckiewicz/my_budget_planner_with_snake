@@ -113,7 +113,7 @@ class Transaction(models.Model):
         blank=False,
         null=False,
         default_currency="PLN",
-        validators=[MinMoneyValidator(0)],
+        validators=[MinMoneyValidator(0.00)],
     )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
