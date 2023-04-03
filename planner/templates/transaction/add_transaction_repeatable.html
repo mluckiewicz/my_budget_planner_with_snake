@@ -2,8 +2,12 @@
 {% load static %}
 {% load widget_tweaks %}
 
-{% block content %}
 
+{% block title %}BP | Add repeatable{% endblock %}
+
+
+{% block content %}
+<div class="container form-container">
     <form action="." method="post">
         {% csrf_token %}
         <div class="row pb-2">
@@ -93,5 +97,5 @@
     <script>
         changeLabelValue("id_{{form.recurrence_type.name}}", "label_{{form.recurrence_value.name}}", "id_{{form.recurrence_value.name}}")
     </script>
-
+</div>
 {% endblock content %}
