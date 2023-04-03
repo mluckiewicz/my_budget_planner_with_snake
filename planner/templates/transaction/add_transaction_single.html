@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
 
-{% block content %}
 
+{% block title %}BP | Add single{% endblock %}
+
+
+{% block content %}
+<div class="container form-container">
     <form action="." method="post">
         {% csrf_token %}
         <div class="row pb-2">
@@ -71,5 +75,5 @@
             </div>
         </div>
     </form>
-
+</div>
 {% endblock content %}
