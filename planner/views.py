@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from .forms import AddSingleTransactionForm, AddRepeatableTransactionForm
 from .models import Transaction, RepeatableTransaction
 
@@ -9,18 +11,16 @@ from .models import Transaction, RepeatableTransaction
 from django.http import HttpResponse
 
 
-def home(request):
-    return redirect("login")  # -> accounts.login
-
-
+@login_required
 def dashboard(request):
     return render(request, "base.html")
 
 
+@method_decorator(login_required, name='dispatch')
 class AddSingleTransactionView(FormView):
     form_class = AddSingleTransactionForm
     template_name = "transaction/add_transaction_single.html"
-    success_url = "/dashboard/"
+    success_url = "/planner/dashboard/"
 
     def form_valid(self, form):
         current_user = self.request.user
@@ -37,11 +37,11 @@ class AddSingleTransactionView(FormView):
         )
         return super().form_valid(form)
 
-
+@method_decorator(login_required, name='dispatch')
 class AddRepeatableTransactionView(FormView):
     form_class = AddRepeatableTransactionForm
     template_name = "transaction/add_transaction_repeatable.html"
-    success_url = "/dashboard/"
+    success_url = "/planner/dashboard/"
 
     def form_valid(self, form):
         current_user = self.request.user
