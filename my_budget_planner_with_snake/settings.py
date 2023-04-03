@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'accounts.apps.AccountsConfig',
+    'planner.apps.PlannerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,8 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'djmoney',
     'widget_tweaks',
-    'planner',
-    'accounts',
 ]
 
 MIDDLEWARE = [
