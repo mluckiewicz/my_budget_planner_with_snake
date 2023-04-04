@@ -28,6 +28,11 @@ urlpatterns = [
         views.edit_transaction_repeatable,
         name="edit_transaction_repeatable",
     ),
+    path(
+      "add_category/",
+      views.add_category,
+      name="add_category"  
+    ),
     path("search/", views.search, name="search"),
     path("calendar_view/", views.calendar_view, name="calendar_view"),
 ]
