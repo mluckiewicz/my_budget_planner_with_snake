@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from djmoney.forms.widgets import MoneyWidget
-from .models import RepeatableTransaction, Transaction
+from .models import RepeatableTransaction, Transaction, Category
 
 
 class AddSingleTransactionForm(forms.ModelForm):
@@ -101,4 +101,16 @@ class AddRepeatableTransactionForm(forms.ModelForm):
                 ),
 
             "description": forms.widgets.Textarea(attrs={"rows": "3"})
+        }
+        
+        
+class AddCategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = (
+            "category_name",
+            "type",
+        )
+        widgets = {
+            "type": forms.widgets.Select(attrs={"required": True}),
         }
