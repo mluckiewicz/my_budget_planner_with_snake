@@ -30,7 +30,7 @@ urlpatterns = [
     ),
     path(
       "add_category/",
-      views.add_category,
+      views.AddCategoryView.as_view(),
       name="add_category"  
     ),
     path("search/", views.search, name="search"),
