@@ -7,7 +7,7 @@ from .forms import (
     AddRepeatableTransactionForm,
     AddCategoryForm,
 )
-from .models import Transaction, RepeatableTransaction, Category
+from .models import Transaction, RepeatableTransaction, Category, UserCategory
 
 
 # Create your views here.
@@ -66,30 +66,38 @@ class AddRepeatableTransactionView(FormView):
         return super().form_valid(form)
 
 
-#! NIE DZIAŁA POST -> back_url przyjmuje wartość None
 class AddCategoryView(View):
     template_name = "category/add_category.html"
-    back_url = None
     form_class = AddCategoryForm
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         return render(request, self.template_name, self.get_context(request))
 
-    def post(self, request, *args, **kwargs):
-        # Sprawdzenie, czy formularz został prawidłowo wypełniony
+    def post(self, request):
+        # Check if the form is valid
         form = self.form_class(request.POST)
         if form.is_valid():
-            # Obsługa zapisu danych z formularza
-            # ...
-
-            # Przekierowanie do innego formularza
-            return redirect(self.back_url)
-        else:
-            # Jeśli formularz nie jest prawidłowy, zaktualizuj kontekst i zwróć stronę z błędami
-            return render(request, self.template_name, self.get_context(request, form))
-
+            
+            # Add new category
+            category = Category.objects.create(
+                category_name=form.cleaned_data["category_name"],
+                type=form.cleaned_data["type"],
+            )
+            category.save()
+            
+            # Assign category to user
+            user_category = UserCategory(user=request.user, category=category)
+            user_category.save()
+            
+            # Redirect back to main form
+            back_url = request.POST.get("back_url", None)
+            if back_url is not None:
+                return redirect(back_url)
+            
+        return render(request, self.template_name, self.get_context(request))
+    
     def get_context(self, request, form=None):
-        # Metoda pomocnicza do generowania słownika z danymi do przekazania do szablonu
+        # Helper method to generate a dictionary with data to pass to the template
         context = {}
         if form:
             context["form"] = form
@@ -97,35 +105,6 @@ class AddCategoryView(View):
             context["form"] = self.form_class()
         context["back_url"] = request.GET.get("back_url", None)
         return context
-
-
-def add_category(request):
-    template_name = "category/add_category.html"
-    if request.method == "POST":
-        # Po dodaniu kategorii i poprawnej validacji formularza użytkownik zostaje
-        # przekierowany zwrotnie do adresu z którego przyszło żadanie
-        form = AddCategoryForm(request.POST)
-        if form.is_valid():
-            Category.objects.create(
-                category_name=form.cleaned_data["category_name"],
-                type=form.cleaned_data["type"],
-            ).save()
-
-            back_url = request.POST.get("back_url", None)
-            if back_url is not None:
-                return redirect(back_url)
-            else:
-                # TODO - nie działa 
-                return redirect(request.POST.path)
-    else:
-        form = AddCategoryForm()
-        context = {"form": form, "back_url": request.GET.get("back_url", None)}
-        return render(request, template_name, context)
-    return render(
-        request,
-        template_name,
-        {"form": form, "back_url": request.GET.get("back_url", None)},
-    )
 
 
 def add_transaction_repeatable(request):
