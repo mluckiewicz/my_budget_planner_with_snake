@@ -24,6 +24,8 @@ class Type(models.Model):
 class Category(models.Model):
     # Fields
     category_name = models.CharField(max_length=255, null=False)
+    default = models.BooleanField(default=False)
+    sers = models.ManyToManyField(User, through='UserCategory')
     type = models.ForeignKey(Type, on_delete=models.CASCADE)
 
     # Meta class
@@ -34,6 +36,16 @@ class Category(models.Model):
     # Methods
     def __str__(self):
         return self.category_name
+    
+
+class UserCategory(models.Model):
+    # Fields
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    
+    # Meta class
+    class Meta:
+        unique_together = ('user', 'category')
 
 
 class Budget(models.Model):
