@@ -3,7 +3,7 @@
 {% load widget_tweaks %}
 
 {% block content %}
-
+<div class="container form-container">
     <form action="." method="post">
         {% csrf_token %}
         <div class="row pb-2">
@@ -28,5 +28,5 @@
         </div>
         <input type="hidden" name="back_url" value="{{ back_url }}">
     </form>
-
+</div>
 {% endblock content %}
