@@ -10,7 +10,7 @@ from .forms import (
     AddCategoryForm,
     AddBudgetForm,
 )
-from .models import Transaction, RepeatableTransaction, Category, UserCategory, Budget
+from .models import (Transaction, RepeatableTransaction, Category, UserCategory, Budget)
 
 
 @login_required
@@ -104,6 +104,19 @@ class AddCategoryView(View):
             context["form"] = self.form_class()
         context["back_url"] = request.GET.get("back_url", None)
         return context
+    
+    
+@method_decorator(login_required, name="dispatch")    
+class CategoryView(View):
+    model = Category
+    template_name = 'category/category_list.html'
+    context_object_name = 'categories'
+    
+    def get(self, request):
+        context = {}
+        categories = Category.objects.filter(users=request.user)
+        context['categories'] = categories
+        return render(request, self.template_name, context)
 
 
 @method_decorator(login_required, name="dispatch")
