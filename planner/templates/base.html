@@ -27,7 +27,8 @@
                 <ul class="nav nav-pills">
                     <li class="nav-item">
                         <a href="{% url 'planner:dashboard' %}"
-                            class="nav-link {% if request.path == '/planner/dashboard/' %}active{% endif %}" aria-current="page">
+                            class="nav-link {% if request.path == '/planner/dashboard/' %}active{% endif %}"
+                            aria-current="page">
                             <i class="bi bi-clipboard-data fs-3"></i>
                         </a>
                     </li>
@@ -37,6 +38,12 @@
                     <li class="nav-item"><a href="{% url 'planner:add_repeatable' %}"
                             class="nav-link {% if request.path == '/planner/add_repeatable/' %}active{% endif %}"><i
                                 class="bi bi-calendar-week fs-3"></i></a></li>
+                    <li class="nav-item"><a href="{% url 'planner:add_category' %}"
+                            class="nav-link {% if request.path == '/planner/add_category/' %}active{% endif %}"><i
+                                class="bi bi-tags fs-3"></i></a></li>
+                    <li class="nav-item"><a href="{% url 'planner:add_budget' %}"
+                            class="nav-link {% if request.path == '/planner/add_budget/' %}active{% endif %}"><i
+                                class="bi bi-cash-stack fs-3"></i></a></li>
                     <li class="nav-item"><a href="#"
                             class="nav-link {% if request.path == '/accounts/user_profile/' %}active{% endif %}"><i
                                 class="bi bi-person-circle fs-3"></i></a></li>
