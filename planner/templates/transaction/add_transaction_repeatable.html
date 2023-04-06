@@ -8,6 +8,9 @@
 
 {% block content %}
 <div class="container form-container">
+    <div class="mb-4">
+        <h1 class="fs-4">Dodaj powtarzalną transakcję</h1>
+    </div>
     <form action="." method="post">
         {% csrf_token %}
         <div class="row pb-2">
@@ -42,7 +45,7 @@
                 <label for="{{form.budget.name}}" class="form-label">{{form.budget.label}}</label>
                 <div class="input-group">
                     {{form.budget|add_class:"form-select"}}
-                    <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-plus-circle fs-5"></i></button>
+                    <a href="{% url 'planner:add_budget' %}?back_url={{ request.path }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-plus-circle fs-5"></i></a>
                 </div>
             </div>
         </div>
@@ -87,9 +90,10 @@
                 </div>
             </div>
         </div>
-        <div class="row pb-2">
-            <div class="d-grid gap-2">
+        <div class="row pt-4">
+            <div class="d-grid gap-2 col-6 mx-auto" style="width: 100%">
                 <button type="submit" class="btn btn-primary">Dodaj transakcję</button>
+                <a href="{{ back_url }}" class="btn btn-outline-secondary btn-sm">Anuluj</a>
             </div>
         </div>
     </form>
