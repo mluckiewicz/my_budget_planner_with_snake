@@ -45,6 +45,8 @@ class UserCategory(models.Model):
     
     # Meta class
     class Meta:
+        verbose_name = "User Category"
+        verbose_name_plural = "User Categories"
         unique_together = ('user', 'category')
 
 
