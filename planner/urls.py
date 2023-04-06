@@ -32,6 +32,11 @@ urlpatterns = [
       views.AddCategoryView.as_view(),
       name="add_category"  
     ),
+    path(
+        "add_budget/",
+        views.AddBudgetView.as_view(),
+        name="add_budget"
+    ),
     path("search/", views.search, name="search"),
     path("calendar_view/", views.calendar_view, name="calendar_view"),
 ]
