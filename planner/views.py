@@ -8,8 +8,9 @@ from .forms import (
     AddSingleTransactionForm,
     AddRepeatableTransactionForm,
     AddCategoryForm,
+    AddBudgetForm,
 )
-from .models import Transaction, RepeatableTransaction, Category, UserCategory
+from .models import Transaction, RepeatableTransaction, Category, UserCategory, Budget
 
 
 # Create your views here.
@@ -21,7 +22,7 @@ def dashboard(request):
     return render(request, "base.html")
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name="dispatch")
 class AddSingleTransactionView(FormView):
     form_class = AddSingleTransactionForm
     template_name = "transaction/add_transaction_single.html"
@@ -42,7 +43,8 @@ class AddSingleTransactionView(FormView):
         )
         return super().form_valid(form)
 
-@method_decorator(login_required, name='dispatch')
+
+@method_decorator(login_required, name="dispatch")
 class AddRepeatableTransactionView(FormView):
     form_class = AddRepeatableTransactionForm
     template_name = "transaction/add_transaction_repeatable.html"
@@ -66,6 +68,7 @@ class AddRepeatableTransactionView(FormView):
         return super().form_valid(form)
 
 
+@method_decorator(login_required, name="dispatch")
 class AddCategoryView(View):
     template_name = "category/add_category.html"
     form_class = AddCategoryForm
@@ -77,25 +80,24 @@ class AddCategoryView(View):
         # Check if the form is valid
         form = self.form_class(request.POST)
         if form.is_valid():
-            
             # Add new category
             category = Category.objects.create(
                 category_name=form.cleaned_data["category_name"],
                 type=form.cleaned_data["type"],
             )
             category.save()
-            
+
             # Assign category to user
             user_category = UserCategory(user=request.user, category=category)
             user_category.save()
-            
+
             # Redirect back to main form
             back_url = request.POST.get("back_url", None)
             if back_url is not None:
                 return redirect(back_url)
-            
+
         return render(request, self.template_name, self.get_context(request))
-    
+
     def get_context(self, request, form=None):
         # Helper method to generate a dictionary with data to pass to the template
         context = {}
@@ -107,8 +109,44 @@ class AddCategoryView(View):
         return context
 
 
-def add_transaction_repeatable(request):
-    return HttpResponse("New repeatable transaction")
+@method_decorator(login_required, name="dispatch")
+class AddBudgetView(View):
+    template_name = "budget/add_budget.html"
+    form_class = AddBudgetForm
+
+    def get(self, request):
+        return render(request, self.template_name, self.get_context(request))
+
+    def post(self, request):
+        # Check if the form is valid
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            # Add new category
+            budget = Budget.objects.create(
+                budget_name=form.cleaned_data["budget_name"],
+                amount=form.cleaned_data["amount"],
+                start_date=form.cleaned_data["start_date"],
+                end_date=form.cleaned_data["end_date"],
+                user=request.user
+            )
+            budget.save()
+
+            # Redirect back to main form
+            back_url = request.POST.get("back_url", None)
+            if back_url is not None:
+                return redirect(back_url)
+
+        return render(request, self.template_name, self.get_context(request))
+
+    def get_context(self, request, form=None):
+        # Helper method to generate a dictionary with data to pass to the template
+        context = {}
+        if form:
+            context["form"] = form
+        else:
+            context["form"] = self.form_class()
+        context["back_url"] = request.GET.get("back_url", None)
+        return context
 
 
 def edit_transaction_single(request):
