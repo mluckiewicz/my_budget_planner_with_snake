@@ -4,8 +4,10 @@ from .models import (
     Category,
     Budget,
     RepeatableTransaction,
-    Transaction
+    Transaction,
+    UserCategory,
 )
+
 
 @admin.register(Type)
 class TypesAdmin(admin.ModelAdmin):
@@ -19,6 +21,14 @@ class CategoriesAdmin(admin.ModelAdmin):
         "type",
     )
 
+
+@admin.register(UserCategory)
+class UserCategoryAdmin(admin.ModelAdmin):
+    list_display = (
+        "user",
+        "category",
+    )
+    
 
 @admin.register(Budget)
 class BudgetsAdmin(admin.ModelAdmin):
@@ -48,6 +58,7 @@ class RepeatableTransactionsAdmin(admin.ModelAdmin):
     raw_id_fields = ('user',)
     date_hierarchy = 'start_date'
     ordering = ('category', 'start_date')
+
 
 @admin.register(Transaction)
 class TransactionsAdmin(admin.ModelAdmin):
