@@ -25,7 +25,7 @@ class Category(models.Model):
     # Fields
     category_name = models.CharField(max_length=255, null=False)
     default = models.BooleanField(default=False)
-    sers = models.ManyToManyField(User, through='UserCategory')
+    users = models.ManyToManyField(User, through='UserCategory')
     type = models.ForeignKey(Type, on_delete=models.CASCADE)
 
     # Meta class
