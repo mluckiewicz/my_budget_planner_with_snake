@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic.edit import FormView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.http import HttpResponse
 from .forms import (
     AddSingleTransactionForm,
     AddRepeatableTransactionForm,
@@ -11,10 +11,6 @@ from .forms import (
     AddBudgetForm,
 )
 from .models import Transaction, RepeatableTransaction, Category, UserCategory, Budget
-
-
-# Create your views here.
-from django.http import HttpResponse
 
 
 @login_required
@@ -93,8 +89,9 @@ class AddCategoryView(View):
 
             # Redirect back to main form
             back_url = request.POST.get("back_url", None)
-            if back_url is not None:
+            if back_url is not None and back_url != "None":
                 return redirect(back_url)
+            return redirect(request.path)
 
         return render(request, self.template_name, self.get_context(request))
 
@@ -133,8 +130,10 @@ class AddBudgetView(View):
 
             # Redirect back to main form
             back_url = request.POST.get("back_url", None)
-            if back_url is not None:
+
+            if back_url is not None and back_url != "None":
                 return redirect(back_url)
+            return redirect(request.path)
 
         return render(request, self.template_name, self.get_context(request))
 
@@ -147,14 +146,6 @@ class AddBudgetView(View):
             context["form"] = self.form_class()
         context["back_url"] = request.GET.get("back_url", None)
         return context
-
-
-def edit_transaction_single(request):
-    return HttpResponse("Edit single transaction")
-
-
-def edit_transaction_repeatable(request):
-    return HttpResponse("Edit single transaction")
 
 
 def search(request):
