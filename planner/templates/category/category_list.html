@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container form-container">
+    <div class="row">
+        <h2>Twoje kategorie transakcji</h2>
+    </div>
+    <div class="row">
+        <div class="col-md-9">
+            <table id="data-table" data-toggle="table" data-pagination="true" data-search="true"
+                class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Category name</th>
+                        <th>Type</th>
+                        <th>Is default</th>
+                        <th>User</th>
+                        <th data-field="action" data-formatter="actionFormatter" data-events="actionEvents"
+                            ata-footer-formatter="footerFormatter">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for obj in categories %}
+                    <tr>
+                        <td>{{ obj.category_name }}</td>
+                        <td>{{ obj.type }}</td>
+                        <td>{{ obj.default }}</td>
+                        <td>{{ obj.users }}</td>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-3 mt-2 border-start solid">
+            <a href="{% url 'planner:new_category' %}?back_url={{ request.path }}"
+                class="btn btn-outline-primary btn-sm text-center"><i class="bi bi-plus-circle fs-5"></i> Dodaj
+                kategorię</a>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#income-table').bootstrapTable();
+
+        $('#expense-table').bootstrapTable();
+    });
+</script>
+<script>
+
+    function actionFormatter() {
+        return '<button class="btn btn-outline-secondary btn-sm">Click</>'
+    }
+</script>
+{% endblock content %}
