@@ -18,24 +18,14 @@ urlpatterns = [
         name="add_repeatable",
     ),
     path(
-        "edit_transaction_single/",
-        views.edit_transaction_single,
-        name="edit_transaction_single",
-    ),
-    path(
-        "edit_transaction_repeatable/",
-        views.edit_transaction_repeatable,
-        name="edit_transaction_repeatable",
-    ),
-    path(
       "add_category/",
       views.AddCategoryView.as_view(),
-      name="add_category"  
+      name="add_category" , 
     ),
     path(
         "add_budget/",
         views.AddBudgetView.as_view(),
-        name="add_budget"
+        name="add_budget",
     ),
     path("search/", views.search, name="search"),
     path("calendar_view/", views.calendar_view, name="calendar_view"),
