@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
 from django.utils import timezone
 from djmoney.models.fields import MoneyField
-from djmoney.models.validators import MaxMoneyValidator, MinMoneyValidator
+from djmoney.models.validators import MinMoneyValidator
 
 
 class Type(models.Model):
