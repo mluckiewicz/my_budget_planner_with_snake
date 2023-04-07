@@ -1,9 +1,10 @@
+from __future__ import annotations
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic.edit import FormView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .forms import (
     AddSingleTransactionForm,
     AddRepeatableTransactionForm,
@@ -114,9 +115,33 @@ class CategoryView(View):
 
     def get(self, request):
         context = {}
-        categories = Category.objects.filter(users=request.user)
-        context["categories"] = categories
+        categoires_default = Category.objects.filter(default=True)
+        categories_users = Category.objects.filter(users=request.user)
+        # Union of default categories with user added 
+        context["categories"] = categoires_default | categories_users
         return render(request, self.template_name, context)
+        
+
+# TODO - move as method to CategoryView
+def delete_categories(request) -> JsonResponse[dict]:
+    """
+    Deletes the selected categories from the database. Uses AJAX equest form template
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        A JSON response containing a success flag and, if applicable, an error message.
+
+    Raises:
+        N/A
+    """
+    if request.method == 'POST':
+        ids = request.POST.getlist('ids[]')
+        Category.objects.filter(id__in=ids).exclude(default=True).delete()    
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
 
 @method_decorator(login_required, name="dispatch")
