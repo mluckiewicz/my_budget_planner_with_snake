@@ -32,6 +32,11 @@ urlpatterns = [
         views.AddCategoryView.as_view(),
         name="new_category" , 
     ),
+    path(
+        "categories/delete_categories/",
+        views.delete_categories,
+        name="delete_categories" , 
+    ),
     path("search/", views.search, name="search"),
     path("calendar_view/", views.calendar_view, name="calendar_view"),
 ]
