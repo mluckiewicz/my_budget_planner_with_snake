@@ -5,15 +5,15 @@
 {% block content %}
     <div class="container form-container">
         <div class="row">
-            <h2>Twoje kategorie transakcji</h2>
+            <h2>Your transaction categories</h2>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div id="toolbar">
                     <a href="{% url 'planner:new_category' %}?back_url={{ request.path }}"
-                        class="btn btn-outline-success">Dodaj kategorię
+                        class="btn btn-outline-success">New category
                     </a>
-                    <button type="button" class="btn btn-outline-danger" onclick="deleteRows()">Delete Selected</button>
+                    <button type="button" class="btn btn-outline-danger" onclick="deleteRows()">Delete selected</button>
                 </div>
                 <table id="table" 
                     data-select-item-name="selected"
