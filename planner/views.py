@@ -1,7 +1,8 @@
 from __future__ import annotations
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormView, UpdateView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.http import HttpResponse, JsonResponse
@@ -67,7 +68,7 @@ class AddRepeatableTransactionView(FormView):
 
 @method_decorator(login_required, name="dispatch")
 class AddCategoryView(View):
-    template_name = "category/add_category.html"
+    template_name = "category/add.html"
     form_class = AddCategoryForm
 
     def get(self, request):
@@ -105,12 +106,20 @@ class AddCategoryView(View):
             context["form"] = self.form_class()
         context["back_url"] = request.GET.get("back_url", None)
         return context
+    
+
+@method_decorator(login_required, name="dispatch")
+class CategoryUpdateView(UpdateView):
+    model = Category
+    form_class = AddCategoryForm
+    template_name = 'category/edit.html'
+    success_url = reverse_lazy('planner:categories')
 
 
 @method_decorator(login_required, name="dispatch")
-class CategoryView(View):
+class CategoryTableView(View):
     model = Category
-    template_name = "category/category_list.html"
+    template_name = "category/table.html"
     context_object_name = "categories"
 
     def get(self, request):
