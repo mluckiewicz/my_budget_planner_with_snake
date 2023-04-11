@@ -1,10 +1,11 @@
 import datetime
 from unittest import skip
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth.models import User
-from .models import Category, Type
+from .models import Category, Type, Transaction, RepeatableTransaction, UserCategory
 from .utils.date_generator import DateCalculator
+from .forms import AddSingleTransactionForm, AddRepeatableTransactionForm, AddCategoryForm
 # Create your tests here.
 
 class TestDateCalculator(TestCase):
@@ -84,6 +85,49 @@ class TestDateCalculator(TestCase):
         pass
     
     
+@skip("In progress")
+class DeleteCategoriesTest(TestCase):
+    def setUp(self):
+        # create a user
+        self.user = User.objects.create_user(
+            username='testuser', password='testpass')
+        # create a type
+        self.type = Type.objects.create(
+            type_name='Type 1')
+        # create some categories
+        self.category1 = Category.objects.create(
+            category_name='Category 1',
+            type=self.type)
+        self.category1.users.add(self.user)
+        self.category2 = Category.objects.create(
+            category_name='Category 2',
+            type=self.type)
+        self.category2.users.add(self.user)
+
+    def test_delete_categories(self):
+        # login as the user
+        self.client.login(username='testuser', password='testpass')
+        # send a POST request to delete the categories
+        url = reverse('delete_categories')
+        response = self.client.post(url, {'ids[]': [self.category1.id, self.category2.id]})
+        # check that the categories have been deleted
+        self.assertFalse(Category.objects.filter(id=self.category1.id).exists())
+        self.assertFalse(Category.objects.filter(id=self.category2.id).exists())
+        # check that the response is successful
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(str(response.content, encoding='utf8'), {'success': True})
+
+    def test_invalid_request_method(self):
+        # send a GET request instead of a POST request
+        url = reverse('delete_categories')
+        response = self.client.get(url)
+        # check that the response indicates an invalid request method
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(str(response.content, encoding='utf8'), {'success': False, 'message': 'Invalid request method'})
+    
+
+
+
 class TestViews(TestCase):
 
     def setUp(self):
