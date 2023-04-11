@@ -6,7 +6,10 @@ app_name = "planner"
 
 
 urlpatterns = [
-    path("dashboard/", views.dashboard, name="dashboard"),
+    path("dashboard/", 
+         views.dashboard, 
+         name="dashboard"
+    ),
     path(
         "add_single/",
         views.AddSingleTransactionView.as_view(),
@@ -22,20 +25,24 @@ urlpatterns = [
         views.AddBudgetView.as_view(),
         name="add_budget",
     ),
-    path(
-        "categories/",
-        views.CategoryView.as_view(),
-        name='categories'
+    path("categories/", 
+         views.CategoryTableView.as_view(), 
+         name="categories"
     ),
     path(
-        "categories/new_category/",
+        "categories/add_category/",
         views.AddCategoryView.as_view(),
-        name="new_category" , 
+        name="add_category",
     ),
     path(
         "categories/delete_categories/",
         views.delete_categories,
-        name="delete_categories" , 
+        name="delete_categories",
+    ),
+    path(
+        "categories/edit/<int:pk>/",
+        views.CategoryUpdateView.as_view(),
+        name="edit_category",
     ),
     path("search/", views.search, name="search"),
     path("calendar_view/", views.calendar_view, name="calendar_view"),
