@@ -36,7 +36,7 @@
                         <label for="{{form.category.name}}" class="form-label">{{form.category.label}}</label>
                         <div class="input-group">
                             {{form.category|add_class:"form-select"}}
-                            <a href="{% url 'planner:new_category' %}?back_url={{ request.path }}"
+                            <a href="{% url 'planner:add_category' %}?back_url={{ request.path }}"
                                 class="btn btn-outline-secondary btn-sm"><i class="bi bi-plus-circle fs-5"></i></a>
                         </div>
                     </div>
