@@ -2,11 +2,11 @@ from django.shortcuts import render, redirect
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from django.utils.html import format_html
 
-from accounts.forms import CreateUserForm
 
-from django.contrib.auth.decorators import login_required
+from accounts.forms import CreateUserForm, UpdateUserForm
+
+
 
 def login_page(request):
     # return HttpResponse("login page")
@@ -38,16 +38,29 @@ def register_page(request):
 
     context = {'form': form}
     return render(request, 'register.html', context)
-    # return HttpResponse("user register page")
+
 
 
 def logout_page(request):
     logout(request)
     return redirect('login')
 
+
 def user_profile(request):
     context = {}
     return render(request, 'user_profile.html', context)
 
+
 def edit_profile(request):
-    return render(request, 'edit_profile.html')
+    if request.method == 'POST':
+        user_form = UpdateUserForm(request.POST, instance=request.user)
+        if user_form.is_valid():
+            user_form.save()
+            messages.success(request, 'Your Profile has been updated!')
+            return redirect('dashboard')
+    else:
+        user_form = UpdateUserForm(instance=request.user)
+    context = {'user_form': user_form}
+    return render(request, 'edit_profile.html', context)
+
+

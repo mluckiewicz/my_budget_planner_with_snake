@@ -12,8 +12,9 @@
     {{user.last_name}}
     {{user.email}}
 
-    <input type="submit" class="button" value="Edit profile">
-</form>
 
+
+</form>
+    <a href="{% url 'edit_profile' %}" class="btn btn-secondary">Edit profile</a>
 
 {#{% endblock %}#}

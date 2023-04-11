@@ -1,10 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{#{% extends "base.html" %}#}
+{#{% block content %}#}
 
-</body>
-</html>
+<h1>Edit profile</h1>
+
+<form method="post" action="">
+    {% csrf_token %}
+    {{ user_form}}
+
+<!--    {{form.username.label}}-->
+<!--    {{form.username}}-->
+
+<!--    {{form.email.label}}-->
+<!--    {{form.email}}-->
+
+<!--    {{form.first_name.label}}-->
+<!--    {{form.first_name}}-->
+
+<!--    {{form.last_name.label}}-->
+<!--    {{form.last_name}}-->
+
+
+
+    <input type="submit" class="button" value="Submit">
+</form>
+
+<p>Change your password: <a href="{%url 'reset_password' %}">Reset password</a></p>
+
+{#{% endblock %}#}
