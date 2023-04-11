@@ -44,3 +44,10 @@ def register_page(request):
 def logout_page(request):
     logout(request)
     return redirect('login')
+
+def user_profile(request):
+    context = {}
+    return render(request, 'user_profile.html', context)
+
+def edit_profile(request):
+    return render(request, 'edit_profile.html')
