@@ -83,42 +83,103 @@ class TestDateCalculator(TestCase):
         # TODO add test for quarterly dates
         pass
     
-@skip("In progress")
-class DeleteCategoriesTest(TestCase):
+    
+class TestViews(TestCase):
+
     def setUp(self):
-        # create a user
-        self.user = User.objects.create_user(
-            username='testuser', password='testpass')
-        # create a type
+        self.client = Client()
+        
         self.type = Type.objects.create(
-            type_name='Type 1')
-        # create some categories
-        self.category1 = Category.objects.create(
-            category_name='Category 1',
-            type=self.type)
-        self.category1.users.add(self.user)
-        self.category2 = Category.objects.create(
-            category_name='Category 2',
-            type=self.type)
-        self.category2.users.add(self.user)
+            type_name="wydatki"
+        )
+        
+        self.user = User.objects.create_user(
+            username='testuser',
+            email='testuser@example.com',
+            password='testpass'
+        )
+        self.category = Category.objects.create(
+            category_name="Test Category",
+            type=self.type,
+        )
+        self.user_category = UserCategory.objects.create(
+            user=self.user,
+            category=self.category,
+        )
+        
 
-    def test_delete_categories(self):
-        # login as the user
+    def test_dashboard_view(self):
         self.client.login(username='testuser', password='testpass')
-        # send a POST request to delete the categories
-        url = reverse('delete_categories')
-        response = self.client.post(url, {'ids[]': [self.category1.id, self.category2.id]})
-        # check that the categories have been deleted
-        self.assertFalse(Category.objects.filter(id=self.category1.id).exists())
-        self.assertFalse(Category.objects.filter(id=self.category2.id).exists())
-        # check that the response is successful
+        response = self.client.get(reverse('planner:dashboard'))
         self.assertEqual(response.status_code, 200)
-        self.assertJSONEqual(str(response.content, encoding='utf8'), {'success': True})
+        self.assertTemplateUsed(response, 'base.html')
 
-    def test_invalid_request_method(self):
-        # send a GET request instead of a POST request
-        url = reverse('delete_categories')
-        response = self.client.get(url)
-        # check that the response indicates an invalid request method
+    @skip("in progress")
+    def test_add_single_transaction_view(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.post(reverse('planner:add_single'), {
+            'type': self.type.pk,
+            'amount': 100,
+            'category': self.category.pk,
+            'budget': '',
+            'execution_date': '2022-04-11',
+            'is_executed': True,
+            'description': 'Test transaction'
+        })
         self.assertEqual(response.status_code, 200)
-        self.assertJSONEqual(str(response.content, encoding='utf8'), {'success': False, 'message': 'Invalid request method'})
+        self.assertRedirects(response, '/planner/dashboard/', 200)
+        self.assertTrue(Transaction.objects.filter(
+            user=self.user,
+            type=self.type.pk,
+            amount=100,
+            category=self.category,
+            execution_date='2022-04-11',
+            is_executed=True,
+            description='Test transaction'
+        ).exists())
+
+    @skip("in progress")
+    def test_add_repeatable_transaction_view(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.post(reverse('planner:add_repeatable'), {
+            'type': self.type.pk,
+            'base_amout': 100,
+            'start_date': '2022-04-11',
+            'end_date': '',
+            'recurrence_type': 'daily',
+            'recurrence_value': 1,
+            'category': self.category.pk,
+            'budget': '',
+            'description': 'Test repeatable transaction'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, '/planner/dashboard/', 200)
+        self.assertTrue(RepeatableTransaction.objects.filter(
+            user=self.user,
+            type=self.type.pk,
+            base_amout=100,
+            start_date='2022-04-11',
+            end_date=None,
+            recurrence_type='daily',
+            recurrence_value=1,
+            category=self.category,
+            description='Test repeatable transaction'
+        ).exists())
+
+    def test_add_category_view(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.post(reverse('planner:add_category'), {
+            'category_name': 'New Category',
+            'type': self.type.pk,
+            'back_url': '/planner/dashboard/',
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/planner/dashboard/')
+        self.assertTrue(Category.objects.filter(
+            category_name='New Category',
+            type=self.type.pk,
+        ).exists())
+        self.assertTrue(UserCategory.objects.filter(
+            user=self.user,
+            category=Category.objects.get(category_name='New Category'),
+        ).exists())
