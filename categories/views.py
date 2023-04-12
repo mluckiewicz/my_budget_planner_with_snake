@@ -5,10 +5,25 @@ from django.views import View
 from django.views.generic.edit import UpdateView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from .forms import AddCategoryForm
 from .models import Category, UserCategory
 
+
+@method_decorator(login_required, name="dispatch")
+class CategoryTableView(View):
+    model = Category
+    template_name = "category/table.html"
+    context_object_name = "categories"
+
+    def get(self, request):
+        context = {}
+        categoires_default = Category.objects.filter(default=True)
+        categories_users = Category.objects.filter(users=request.user)
+        # Union of default categories with user added 
+        context["categories"] = categoires_default | categories_users
+        return render(request, self.template_name, context)
+    
 
 # Create your views here.
 @method_decorator(login_required, name="dispatch")
@@ -61,22 +76,7 @@ class CategoryUpdateView(UpdateView):
     success_url = reverse_lazy('categories:categories')
 
 
-@method_decorator(login_required, name="dispatch")
-class CategoryTableView(View):
-    model = Category
-    template_name = "category/table.html"
-    context_object_name = "categories"
 
-    def get(self, request):
-        context = {}
-        categoires_default = Category.objects.filter(default=True)
-        categories_users = Category.objects.filter(users=request.user)
-        # Union of default categories with user added 
-        context["categories"] = categoires_default | categories_users
-        return render(request, self.template_name, context)
-        
-
-# TODO - move as method to CategoryView
 def delete_categories(request) -> JsonResponse[dict]:
     """
     Deletes the selected categories from the database. Uses AJAX equest form template
