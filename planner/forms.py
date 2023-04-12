@@ -102,19 +102,7 @@ class AddRepeatableTransactionForm(forms.ModelForm):
 
             "description": forms.widgets.Textarea(attrs={"rows": "3"})
         }
-        
-        
-class AddCategoryForm(forms.ModelForm):
-    class Meta:
-        model = Category
-        fields = (
-            "category_name",
-            "type",
-        )
-        widgets = {
-            "type": forms.widgets.Select(attrs={"required": True}),
-        }
-        
+
         
 class AddBudgetForm(forms.ModelForm):
     class Meta:

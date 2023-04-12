@@ -39,25 +39,6 @@ urlpatterns = [
         views.BudgetUpdateView.as_view(),
         name="edit_budget",
     ),
-    path("categories/", 
-         views.CategoryTableView.as_view(), 
-         name="categories"
-    ),
-    path(
-        "categories/add_category/",
-        views.AddCategoryView.as_view(),
-        name="add_category",
-    ),
-    path(
-        "categories/delete_categories/",
-        views.delete_categories,
-        name="delete_categories",
-    ),
-    path(
-        "categories/edit/<int:pk>/",
-        views.CategoryUpdateView.as_view(),
-        name="edit_category",
-    ),
     path("search/", views.search, name="search"),
     path("calendar_view/", views.calendar_view, name="calendar_view"),
 ]

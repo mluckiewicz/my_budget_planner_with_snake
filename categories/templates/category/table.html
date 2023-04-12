@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div id="toolbar">
-                    <a href="{% url 'planner:add_category' %}?back_url={{ request.path }}"
+                    <a href="{% url 'categories:add_category' %}?back_url={{ request.path }}"
                         class="btn btn-outline-success">New category
                     </a>
                     <button type="button" class="btn btn-outline-danger" onclick="deleteRows()">Delete selected</button>
