@@ -41,8 +41,8 @@
                     <a href="{% url 'planner:add_repeatable' %}"
                         class="nav-link text-primary {% if request.path == '/planner/add_repeatable/' %}active_underline{% endif %}"><i
                             class="bi bi-calendar-week fs-4"></i></a>
-                    <a href="{% url 'planner:categories' %}"
-                        class="nav-link text-primary {% if request.path == '/planner/categories/' %}active_underline{% endif %}"><i
+                    <a href="{% url 'categories:categories' %}"
+                        class="nav-link text-primary {% if request.path == '/categories/categories/' %}active_underline{% endif %}"><i
                             class="bi bi-tags fs-4"></i></a>
                     <a href="{% url 'planner:budget' %}"
                         class="nav-link text-primary {% if request.path == '/planner/budget/'  %}active_underline{% endif %}"><i
