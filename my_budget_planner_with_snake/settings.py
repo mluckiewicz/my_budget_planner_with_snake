@@ -33,9 +33,9 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
-    'planner.apps.PlannerConfig',
     'categories.apps.CategoriesConfig',
     'budgets.apps.BudgetsConfig',
+    'transactions.apps.TransactionsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -130,7 +130,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = 'planner:dashboard'
+LOGIN_REDIRECT_URL = 'dashboard:dashboard'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 
