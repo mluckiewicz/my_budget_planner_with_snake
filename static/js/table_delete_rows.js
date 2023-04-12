@@ -2,7 +2,7 @@
     function deleteRows() {
         // Get the selected rows
         var selectedRows = $('#table').bootstrapTable('getSelections');
-        var csrf_token = '{{ csrf_token }}';
+        var csrf_token = document.querySelector('script[src$="table_delete_rows.js"]').getAttribute('data-csrf-token')
         // Check if any rows are selected
         if (selectedRows.length > 0) {
             // Check if any selected rows are default
@@ -21,8 +21,9 @@
                     });
                     // Send the AJAX request to delete the rows
                     $.ajax({
-                        url: 'delete_categories/',
+                        url: delete_url,
                         type: 'POST',
+                        headers: { "X-CSRFToken": csrf_token },
                         data: { 'ids': ids, csrfmiddlewaretoken: csrf_token },
                         dataType: 'json',
                         success: function (data) {
