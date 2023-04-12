@@ -8,7 +8,7 @@ app_name = "budgets"
 urlpatterns = [
     path("", 
          views.BudgetTableView.as_view(), 
-         name="budget"
+         name="budgets"
     ),
     path(
         "add_budget/",
