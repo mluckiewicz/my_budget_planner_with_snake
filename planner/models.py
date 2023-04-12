@@ -4,31 +4,6 @@ from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
 from djmoney.models.fields import MoneyField
 from djmoney.models.validators import MinMoneyValidator
-from categories.models import Category, Type
-
-
-class Budget(models.Model):
-    # Fields
-    budget_name = models.CharField(max_length=255, null=False)
-    amount = MoneyField(
-        max_digits=10,
-        decimal_places=2,
-        null=False,
-        default_currency="PLN",
-        validators=[MinMoneyValidator(0)],
-    )
-    start_date = models.DateField(default=timezone.now, null=False)
-    end_date = models.DateField(default=timezone.now, null=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    # Meta class
-    class Meta:
-        verbose_name = "Budget"
-        verbose_name_plural = "Budgets"
-
-    # Methods
-    def __str__(self):
-        return self.budget_name
 
 
 class RepeatableTransaction(models.Model):
@@ -70,7 +45,7 @@ class RepeatableTransaction(models.Model):
         on_delete=models.CASCADE,
         default=None,
     )
-    budget = models.ForeignKey(Budget, on_delete=models.CASCADE, default=None)
+    budget = models.ForeignKey('budgets.Budget', on_delete=models.CASCADE, default=None)
 
     # Meta class
     class Meta:
@@ -111,7 +86,7 @@ class Transaction(models.Model):
     repeatable_transaction = models.ForeignKey(
         RepeatableTransaction, blank=True, null=True, on_delete=models.CASCADE
     )
-    budget = models.ForeignKey(Budget, on_delete=models.CASCADE)
+    budget = models.ForeignKey('budgets.Budget', on_delete=models.CASCADE)
 
     # Meta class
     class Meta:
