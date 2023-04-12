@@ -13,7 +13,7 @@ from .models import Transaction, RepeatableTransaction
 class AddSingleTransactionView(FormView):
     form_class = AddSingleTransactionForm
     template_name = "transaction/add_transaction_single.html"
-    success_url = "/planner/dashboard/"
+    success_url = "/dashboard/"
 
     def form_valid(self, form):
         current_user = self.request.user
@@ -35,7 +35,7 @@ class AddSingleTransactionView(FormView):
 class AddRepeatableTransactionView(FormView):
     form_class = AddRepeatableTransactionForm
     template_name = "transaction/add_transaction_repeatable.html"
-    success_url = "/planner/dashboard/"
+    success_url = "/dashboard/"
 
     def form_valid(self, form):
         current_user = self.request.user
