@@ -32,7 +32,7 @@ class AuthRedirectView(RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         if self.request.user.is_authenticated:
-            return reverse_lazy('planner:dashboard')
+            return reverse_lazy('dashboard:dashboard')
         else:
             return super().get_redirect_url(*args, **kwargs)
         
