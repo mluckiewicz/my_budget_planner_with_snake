@@ -20,25 +20,6 @@ urlpatterns = [
         views.AddRepeatableTransactionView.as_view(),
         name="add_repeatable",
     ),
-    path("budget/", 
-         views.BudgetTableView.as_view(), 
-         name="budget"
-    ),
-    path(
-        "budget/add_budget/",
-        views.AddBudgetView.as_view(),
-        name="add_budget",
-    ),
-    path(
-        "budget/delete_budget/",
-        views.delete_budget,
-        name="delete_budget",
-    ),
-    path(
-        "budget/edit/<int:pk>/",
-        views.BudgetUpdateView.as_view(),
-        name="edit_budget",
-    ),
     path("search/", views.search, name="search"),
     path("calendar_view/", views.calendar_view, name="calendar_view"),
 ]
