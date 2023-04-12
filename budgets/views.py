@@ -15,7 +15,7 @@ from .models import Budget
 class BudgetTableView(View):
     model = Budget
     template_name = "budget/table.html"
-    context_object_name = "budget"
+    context_object_name = "budgets"
 
     def get(self, request):
         context = {}
@@ -23,28 +23,7 @@ class BudgetTableView(View):
         # Union of default categories with user added 
         context["budgets"] = user_added
         return render(request, self.template_name, context)
-    
-    
-def delete_budget(request) -> JsonResponse[dict]:
-    """
-    Deletes the selected categories from the database. Uses AJAX equest form template
 
-    Args:
-        request: The HTTP request object.
-
-    Returns:
-        A JSON response containing a success flag and, if applicable, an error message.
-
-    Raises:
-        N/A
-    """
-    if request.method == 'POST':
-        ids = request.POST.getlist('ids[]')
-        Budget.objects.filter(id__in=ids).delete()    
-        return JsonResponse({'success': True})
-    else:
-        return JsonResponse({'success': False, 'message': 'Invalid request method'})
-    
     
 @method_decorator(login_required, name="dispatch")
 class AddBudgetView(View):
@@ -93,4 +72,25 @@ class BudgetUpdateView(UpdateView):
     model = Budget
     form_class = AddBudgetForm
     template_name = 'budget/edit.html'
-    success_url = reverse_lazy('planner:budget')
+    success_url = reverse_lazy('budgets:budgets')
+        
+    
+def delete_budget(request) -> JsonResponse[dict]:
+    """
+    Deletes the selected categories from the database. Uses AJAX equest form template
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        A JSON response containing a success flag and, if applicable, an error message.
+
+    Raises:
+        N/A
+    """
+    if request.method == 'POST':
+        ids = request.POST.getlist('ids[]')
+        Budget.objects.filter(id__in=ids).delete()    
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False, 'message': 'Invalid request method'})
