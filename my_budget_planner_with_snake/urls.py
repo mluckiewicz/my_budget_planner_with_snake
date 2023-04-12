@@ -8,5 +8,6 @@ urlpatterns = [
     path('planner/', include('planner.urls')),
     path('account/', include('accounts.urls')),
     path('categories/', include('categories.urls')),
+    path('budgets/', include('budgets.urls')),
     path('admin/', admin.site.urls),
 ]
