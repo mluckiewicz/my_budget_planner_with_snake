@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'categories.apps.CategoriesConfig',
     'budgets.apps.BudgetsConfig',
     'transactions.apps.TransactionsConfig',
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
