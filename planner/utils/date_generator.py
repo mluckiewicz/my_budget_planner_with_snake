@@ -47,7 +47,7 @@ class DateCalculator:
         ]
         return dates
 
-    def _generate_monthly_dates(self, recurrence_value: int) -> list[datetime.date]:
+    def _generate_monthly_dates(self, recurrence_value: int|None = None) -> list[datetime.date]:
         """
         Generates a list of dates in monthly intervals between the start date and the end date.
 
@@ -55,19 +55,17 @@ class DateCalculator:
         :return: A list of datetime.date objects representing the dates in monthly intervals.
         """
         dates = []
-        months_in_period = (
-            relativedelta(self.end_date, self.start_date).years * 12
-            + relativedelta(self.end_date, self.start_date).months
-        )
-        dates.append(self.start_date.replace(day=recurrence_value))
-
-        for _ in range(months_in_period):
-            curr = dates[-1]
-            year = curr.year
-            month = curr.month if curr.month < 12 else 1
-            day = curr.day
-            next_date = datetime.date(year, month + 1, day)
-            dates.append(next_date)
+        if recurrence_value is not None:
+            current_date = self.start_date.replace(day=recurrence_value)
+        else:
+            current_date = self.start_date
+            
+        while current_date <= self.end_date:
+            dates.append(current_date)
+            if current_date.month == 12:
+                current_date = current_date.replace(year=current_date.year+1, month=1)
+            else:
+                current_date = current_date.replace(month=current_date.month+1)
         return dates
 
     #! NIE DZIAŁA ZGODNIE Z ZAŁOŻENIEM

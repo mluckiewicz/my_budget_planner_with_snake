@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from accounts.views import AuthRedirectView
+
 
 urlpatterns = [
-    path('', include('planner.urls')),
-    path('', include('accounts.urls')),
+    path('', AuthRedirectView.as_view(pattern_name="login")),
+    path('planner/', include('planner.urls')),
+    path('account/', include('accounts.urls')),
     path('admin/', admin.site.urls),
 ]

@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+
+{% block title %}BP | Add single{% endblock %}
+
+
+{% block content %}
+<div class="container form-container">
+    <form action="." method="post">
+        {% csrf_token %}
+        <div class="row pb-2">
+            <div class="col">
+                {{form.type.errors}}
+                <label for="{{form.type.name}}" class="form-label">{{form.type.label}}</label>
+                {{form.type|add_class:"form-select"}}
+            </div>
+        </div>
+        <div class="row pb-2">
+            <div class="col">
+                {{form.amount.errors}}
+                <label for="{{form.amount.name}}" class="form-label">{{form.amount.label}}</label>
+                <div class="input-group">
+                    {{form.amount|add_class:"form-control"}}
+                </div>
+            </div>
+        </div>
+        <div class="row pb-2">
+            <div class="col">
+                {{form.category.errors}}
+                <label for="{{form.category.name}}" class="form-label">{{form.category.label}}</label>
+                <div class="input-group">
+                    {{form.category|add_class:"form-select"}}
+                    <a href="{% url 'planner:add_category' %}?back_url={{ request.path }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-plus-circle fs-5"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="row pb-2">
+            <div class="col">
+                {{form.budget.errors}}
+                <label for="{{form.budget.name}}" class="form-label">{{form.budget.label}}</label>
+                <div class="input-group">
+                    {{form.budget|add_class:"form-select"}}
+                    <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-plus-circle fs-5"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="row pb-2">
+            <div class="col col-7">
+                {{form.execution_date.errors}}
+                <label for="{{form.execution_date.name}}" class="form-label">{{form.execution_date.label}}</label>
+                <div class="">
+                    {{form.execution_date|add_class:"form-control"|attr:"type:date"|attr:"placeholder:yyyy-mm-dd"}}
+                </div>
+            </div>
+            <div class="col col-5 d-flex align-items-center">
+                <div class="form-check">
+                    {{form.is_executed}}
+                    <label for="{{form.is_executed.name}}" class="form-check-label">{{form.is_executed.label}}</label>
+                </div>
+            </div>
+        </div>
+        <div class="row pb-2">
+            <div class="col">
+                {{form.description.errors}}
+                <label for="{{form.description.name}}" class="form-label">{{form.description.label}}</label>
+                <div class="">
+                    {{form.description|add_class:"form-control"}}
+                </div>
+            </div>
+        </div>
+        <div class="row pb-2">
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Dodaj transakcję</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock content %}
