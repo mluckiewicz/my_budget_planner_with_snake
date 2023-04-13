@@ -43,7 +43,11 @@ class RepeatableTransactionsAdmin(admin.ModelAdmin):
         "type",
         "budget"
     )
-
+    list_filter = ('type', 'category', 'budget','user')
+    search_fields = ['user__username', 'category__category_name', 'description']
+    raw_id_fields = ('user',)
+    date_hierarchy = 'start_date'
+    ordering = ('category', 'start_date')
 
 @admin.register(Transaction)
 class TransactionsAdmin(admin.ModelAdmin):
@@ -59,4 +63,7 @@ class TransactionsAdmin(admin.ModelAdmin):
         "created",
         "updated",
     )
-
+    list_filter = ('user', 'type', 'category', 'budget')
+    search_fields = ['user__username', 'category__category_name', 'description']
+    date_hierarchy = 'execution_date'
+    ordering = ('category', 'execution_date')

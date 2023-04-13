@@ -1,5 +1,6 @@
 import datetime
 from django.test import TestCase
+from unittest import skip
 from .utils.date_generator import DateCalculator
 # Create your tests here.
 
@@ -26,17 +27,32 @@ class TestDateCalculator(TestCase):
         self.assertEqual(dates[0], self.start_date.replace(day=recurrence_value)) # first date should be the start date with the day replaced by the recurrence value
         for i in range(1, len(dates)):
             self.assertEqual(dates[i].day, recurrence_value) # all other dates should have the recurrence value as the day
-            
+               
     def test_generate_monthly_dates_next_year(self):
-        start_date = datetime.date(2022, 11, 1)
+        start_date = datetime.date(2022, 1, 1)
         end_date = datetime.date(2023, 1, 31)
+        target = [
+            datetime.date(2022, 1, 15),
+            datetime.date(2022, 2, 15),
+            datetime.date(2022, 3, 15),
+            datetime.date(2022, 4, 15),
+            datetime.date(2022, 5, 15),
+            datetime.date(2022, 6, 15),
+            datetime.date(2022, 7, 15),
+            datetime.date(2022, 8, 15),
+            datetime.date(2022, 9, 15),
+            datetime.date(2022, 10, 15),
+            datetime.date(2022, 11, 15),
+            datetime.date(2022, 12, 15),
+            datetime.date(2023, 1, 15),
+        ]
         dc = DateCalculator(start_date, end_date)
         recurrence_value = 15 # 15th day of the month
         dates = dc._generate_monthly_dates(recurrence_value)
-        self.assertEqual(len(dates), 3) # should generate 3 dates
+        self.assertEqual(len(dates), 13) # should generate 3 dates
         self.assertEqual(dates[0], start_date.replace(day=recurrence_value)) # first date should be the start date with the day replaced by the recurrence value
         for i in range(1, len(dates)):
-            self.assertEqual(dates[i].day, recurrence_value) # all other dates should have the recurrence value as the day
+            self.assertEqual(dates[i], target[i]) # all other dates should have the recurrence value as the day
 
     def test_generate_quaterly_dates(self):
         # TODO add test for quarterly dates
@@ -63,3 +79,111 @@ class TestDateCalculator(TestCase):
     def test_get_dates_quaterly(self):
         # TODO add test for quarterly dates
         pass
+    
+    
+from django.test import TestCase, Client
+from django.urls import reverse
+from django.contrib.auth.models import User
+from .models import Transaction, RepeatableTransaction, Category, UserCategory, Type
+from .forms import AddSingleTransactionForm, AddRepeatableTransactionForm, AddCategoryForm
+
+
+class TestViews(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        
+        self.type = Type.objects.create(
+            type_name="wydatki"
+        )
+        
+        self.user = User.objects.create_user(
+            username='testuser',
+            email='testuser@example.com',
+            password='testpass'
+        )
+        self.category = Category.objects.create(
+            category_name="Test Category",
+            type=self.type,
+        )
+        self.user_category = UserCategory.objects.create(
+            user=self.user,
+            category=self.category,
+        )
+        
+
+    def test_dashboard_view(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.get(reverse('planner:dashboard'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'base.html')
+
+    @skip("in progress")
+    def test_add_single_transaction_view(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.post(reverse('planner:add_single'), {
+            'type': self.type.pk,
+            'amount': 100,
+            'category': self.category.pk,
+            'budget': '',
+            'execution_date': '2022-04-11',
+            'is_executed': True,
+            'description': 'Test transaction'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, '/planner/dashboard/', 200)
+        self.assertTrue(Transaction.objects.filter(
+            user=self.user,
+            type=self.type.pk,
+            amount=100,
+            category=self.category,
+            execution_date='2022-04-11',
+            is_executed=True,
+            description='Test transaction'
+        ).exists())
+
+    @skip("in progress")
+    def test_add_repeatable_transaction_view(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.post(reverse('planner:add_repeatable'), {
+            'type': self.type.pk,
+            'base_amout': 100,
+            'start_date': '2022-04-11',
+            'end_date': '',
+            'recurrence_type': 'daily',
+            'recurrence_value': 1,
+            'category': self.category.pk,
+            'budget': '',
+            'description': 'Test repeatable transaction'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, '/planner/dashboard/', 200)
+        self.assertTrue(RepeatableTransaction.objects.filter(
+            user=self.user,
+            type=self.type.pk,
+            base_amout=100,
+            start_date='2022-04-11',
+            end_date=None,
+            recurrence_type='daily',
+            recurrence_value=1,
+            category=self.category,
+            description='Test repeatable transaction'
+        ).exists())
+
+    def test_add_category_view(self):
+        self.client.login(username='testuser', password='testpass')
+        response = self.client.post(reverse('planner:add_category'), {
+            'category_name': 'New Category',
+            'type': self.type.pk,
+            'back_url': '/planner/dashboard/',
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/planner/dashboard/')
+        self.assertTrue(Category.objects.filter(
+            category_name='New Category',
+            type=self.type.pk,
+        ).exists())
+        self.assertTrue(UserCategory.objects.filter(
+            user=self.user,
+            category=Category.objects.get(category_name='New Category'),
+        ).exists())
