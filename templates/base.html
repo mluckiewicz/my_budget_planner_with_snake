@@ -11,6 +11,7 @@
         integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.css">
+    
     <link href="{% static 'css/base.css' %}" rel="stylesheet">
     <link href="{% static 'css/forms.css' %}" rel="stylesheet">
 </head>
@@ -34,13 +35,10 @@
                         aria-current="page">
                         <i class="bi bi-clipboard-data fs-4"></i>
                     </a>
-                    <a href="{% url 'transactions:add_single' %}"
-                        class="nav-link text-primary {% if request.path == '/transactions/add_single/' %}active_underline{% endif %}">
-                        <i class="bi bi-calendar-event fs-4"></i>
+                    <a href="{% url 'transactions:transactions' %}"
+                        class="nav-link text-primary {% if request.path == '/transactions/' %}active_underline{% endif %}">
+                        <i class="bi bi-receipt fs-4"></i>
                     </a>
-                    <a href="{% url 'transactions:add_repeatable' %}"
-                        class="nav-link text-primary {% if request.path == '/transactions/add_repeatable/' %}active_underline{% endif %}"><i
-                            class="bi bi-calendar-week fs-4"></i></a>
                     <a href="{% url 'categories:categories' %}"
                         class="nav-link text-primary {% if request.path == '/categories/' %}active_underline{% endif %}"><i
                             class="bi bi-tags fs-4"></i></a>

@@ -1,4 +1,6 @@
 from __future__ import annotations
+from django.shortcuts import render
+from django.views.generic import View
 from django.views.generic.edit import FormView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -53,3 +55,17 @@ class AddRepeatableTransactionView(FormView):
             description=form.cleaned_data["description"],
         )
         return super().form_valid(form)
+    
+    
+@method_decorator(login_required, name="dispatch")
+class TransactionTableView(View):
+    model = Transaction
+    template_name = "transaction/table.html"
+    context_object_name = "transactions"
+
+    def get(self, request):
+        context = {}
+        transactions = self.model.objects.all()
+        # Union of default categories with user added 
+        context["transactions"] = transactions
+        return render(request, self.template_name, context)

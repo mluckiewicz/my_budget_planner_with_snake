@@ -6,7 +6,10 @@ app_name = "transactions"
 
 
 urlpatterns = [
-
+    path("", 
+         views.TransactionTableView.as_view(), 
+         name="transactions"
+    ),
     path(
         "add_single/",
         views.AddSingleTransactionView.as_view(),
