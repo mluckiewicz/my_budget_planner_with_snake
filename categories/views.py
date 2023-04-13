@@ -20,12 +20,11 @@ class CategoryTableView(View):
         context = {}
         categoires_default = Category.objects.filter(default=True)
         categories_users = Category.objects.filter(users=request.user)
-        # Union of default categories with user added 
+        # Union of default categories with user added
         context["categories"] = categoires_default | categories_users
         return render(request, self.template_name, context)
-    
 
-# Create your views here.
+
 @method_decorator(login_required, name="dispatch")
 class AddCategoryView(View):
     template_name = "category/add.html"
@@ -66,15 +65,14 @@ class AddCategoryView(View):
             context["form"] = self.form_class()
         context["back_url"] = request.GET.get("back_url", None)
         return context
-    
+
 
 @method_decorator(login_required, name="dispatch")
 class CategoryUpdateView(UpdateView):
     model = Category
     form_class = AddCategoryForm
-    template_name = 'category/edit.html'
-    success_url = reverse_lazy('categories:categories')
-
+    template_name = "category/edit.html"
+    success_url = reverse_lazy("categories:categories")
 
 
 def delete_categories(request) -> JsonResponse[dict]:
@@ -90,9 +88,9 @@ def delete_categories(request) -> JsonResponse[dict]:
     Raises:
         N/A
     """
-    if request.method == 'POST':
-        ids = request.POST.getlist('ids[]')
-        Category.objects.filter(id__in=ids).exclude(default=True).delete()    
-        return JsonResponse({'success': True})
+    if request.method == "POST":
+        ids = request.POST.getlist("ids[]")
+        Category.objects.filter(id__in=ids).exclude(default=True).delete()
+        return JsonResponse({"success": True})
     else:
-        return JsonResponse({'success': False, 'message': 'Invalid request method'})
+        return JsonResponse({"success": False, "message": "Invalid request method"})
