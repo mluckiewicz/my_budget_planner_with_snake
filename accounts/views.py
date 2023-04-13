@@ -59,5 +59,5 @@ class AuthLoginview(LoginView):
     """
     template_name = 'account/login.html'
     redirect_authenticated_user = True
-    success_url = reverse_lazy('planner:dashboard')
+    success_url = reverse_lazy('dashboard:dashboard')
     
