@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import RedirectView
 from django.contrib.auth.views import LoginView
-from .forms import UserRegistrationForm
+from .forms import UserRegistrationForm, UpdateUserForm
 
 
 def register(request):
@@ -18,13 +18,31 @@ def register(request):
     return render(request, "account/register.html", {"form": form})
 
 
+def user_profile(request):
+    context = {}
+    return render(request, 'account/user_profile.html', context)
+
+
+def edit_profile(request):
+    if request.method == 'POST':
+        user_form = UpdateUserForm(request.POST, instance=request.user)
+        if user_form.is_valid():
+            user_form.save()
+            # messages.success(request, 'Your Profile has been updated!')
+            return redirect('planner:dashboard')
+
+    else:
+        user_form = UpdateUserForm(instance=request.user)
+    context = {'user_form': user_form}
+    return render(request, 'account/edit_profile.html', context)
+
+
 class AuthRedirectView(RedirectView):
     """
     Redirects authenticated users to the dashboard, otherwise to the login page.
 
     If the user is authenticated, this view will redirect to the dashboard page
     using the URL defined by the 'planner:dashboard' named URL pattern.
-
     If the user is not authenticated, this view will call the 'get_redirect_url'
     method of the parent class to get the redirect URL. By default, this will
     redirect to the URL defined by the 'login' named URL pattern.
@@ -43,7 +61,6 @@ class AuthLoginview(LoginView):
 
     This view is based on Django's built-in 'LoginView' class and inherits all of
     its functionality, including form validation, authentication, and redirecting.
-
     By default, this view will use the 'account/login.html' template and will
     redirect authenticated users to the dashboard URL defined by the 'planner:dashboard'
     named URL pattern. This behavior can be customized by setting the 'template_name',
