@@ -74,7 +74,7 @@
 <script type=text/javascript>
     var base_url = '{{ request.path }}';
     var csrf_token = '{{ csrf_token }}';
-    var delete_url = 'delete_categories/';
+    var delete_url = 'delete_transactions/';
 </script>
 <script src="{% static 'js/table_button_delegation.js' %}"></script>
 <script src="{% static 'js/table_delete_rows.js' %}" data-csrf-token='{{ csrf_token }}'></script>
