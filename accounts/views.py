@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import RedirectView
 from django.contrib.auth.views import LoginView
-from .forms import UserRegistrationForm
+from .forms import UserRegistrationForm, UpdateUserForm
 
 
 def register(request):
@@ -16,6 +16,25 @@ def register(request):
     else:
         form = UserRegistrationForm()
     return render(request, "account/register.html", {"form": form})
+
+
+def user_profile(request):
+    context = {}
+    return render(request, 'account/user_profile.html', context)
+
+
+def edit_profile(request):
+    if request.method == 'POST':
+        user_form = UpdateUserForm(request.POST, instance=request.user)
+        if user_form.is_valid():
+            user_form.save()
+            # messages.success(request, 'Your Profile has been updated!')
+            return redirect('planner:dashboard')
+
+    else:
+        user_form = UpdateUserForm(instance=request.user)
+    context = {'user_form': user_form}
+    return render(request, 'account/edit_profile.html', context)
 
 
 class AuthRedirectView(RedirectView):
