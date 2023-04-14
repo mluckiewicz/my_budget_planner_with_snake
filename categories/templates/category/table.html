@@ -15,26 +15,33 @@
             <div class="col-md-12">
                 <div id="toolbar">
                     <a href="{% url 'categories:add_category' %}?back_url={{ request.path }}"
-                        class="btn btn-outline-success">New category
+                        class="btn btn-outline-success"><i class="bi bi-plus-circle fs-5"></i>
                     </a>
-                    <button type="button" class="btn btn-outline-danger" onclick="deleteRows()">Delete selected</button>
+                    <button type="button" class="btn btn-outline-danger" onclick="deleteRows()"><i class="bi bi-trash fs-5"></i></button>
                 </div>
-                <table id="table" data-select-item-name="selected" data-toggle="table" data-search="true"
-                    data-show-export="true" data-toolbar="#toolbar" data-show-toggle="true" data-toolbar-align="left"
-                    data-show-fullscreen="true" data-pagination="true" data-classes="
-                            table 
-                            table-responsive
-                            table-hover
-                            align-middle">
-                    <thead>
+                <table id="table" 
+                    data-select-item-name="selected" 
+                    data-toggle="table" 
+                    data-search="true"
+                    data-show-columns="false"
+                    data-toolbar="#toolbar" 
+                    data-show-toggle="false" 
+                    data-toolbar-align="left"
+                    data-show-fullscreen="false" 
+                    data-pagination="true"
+                    data-classes="
+                        table 
+                        table-responsive
+                        table-hover
+                        align-middle">
+                <thead class="bg-light">
                         <tr>
                             <th data-field="state" data-checkbox="true"></th>
                             <th data-field="id" data-visible="false">id</th>
-                            <th data-field="category_name">Category name</th>
-                            <th data-field="type">Type</th>
-                            <th data-field="is_default">Is default?</th>
-                            <th data-field="user">User</th>
-                            <th data-field="action">Edit</th>
+                            <th data-field="category_name" data-sortable="true">Category name</th>
+                            <th data-field="type" data-sortable="true">Type</th>
+                            <th data-field="is_default" data-sortable="true">Is default?</th>
+                            <th data-field="action" data-sortable="true">Edit</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,7 +52,6 @@
                             <td>{{ obj.category_name }}</td>
                             <td>{{ obj.type }}</td>
                             <td>{{ obj.default }}</td>
-                            <td>{{ obj.users }}</td>
                             <td>
                                 <button class="btn btn-outline-secondary btn-sm edit-button" data-id="{{ obj.id }}">Click</>
                             </td>
