@@ -41,6 +41,7 @@
                     <thead class="bg-light">
                             <th data-field="state" data-checkbox="true"></th>
                             <th data-field="id" data-visible="false" data-sortable="true">id</th>
+                            <th data-field="execution_date" data-sortable="true">Execution date</th>
                             <th data-field="category_name" data-sortable="true">Category name</th>
                             <th data-field="type" data-sortable="true">Type</th>
                             <th data-field="amount" data-sortable="true">Amount</th>
@@ -54,6 +55,7 @@
                         <tr>
                             <td></td>
                             <td>{{ obj.id }}</td>
+                            <td>{{ obj.execution_date }}</td>
                             <td>{{ obj.category }}</td>
                             <td>{{ obj.type }}</td>
                             <td>{{ obj.amount }}</td>

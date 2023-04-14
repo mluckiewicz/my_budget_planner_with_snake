@@ -15,27 +15,34 @@
             <div class="col-md-12">
                 <div id="toolbar">
                     <a href="{% url 'budgets:add_budget' %}?back_url={{ request.path }}"
-                        class="btn btn-outline-success">New budget
+                        class="btn btn-outline-success"><i class="bi bi-plus-circle fs-5"></i>
                     </a>
-                    <button type="button" class="btn btn-outline-danger" onclick="deleteRows()">Delete selected</button>
+                    <button type="button" class="btn btn-outline-danger" onclick="deleteRows()"><i class="bi bi-trash fs-5"></i></button>
                 </div>
-                <table id="table" data-select-item-name="selected" data-toggle="table" data-search="true"
-                    data-show-export="true" data-toolbar="#toolbar" data-show-toggle="true" data-toolbar-align="left"
-                    data-show-fullscreen="true" data-pagination="true" data-classes="
-                            table 
-                            table-responsive
-                            table-hover
-                            align-middle">
-                    <thead>
+                <table id="table" 
+                    data-select-item-name="selected" 
+                    data-toggle="table" 
+                    data-search="true"
+                    data-show-columns="false"
+                    data-toolbar="#toolbar" 
+                    data-show-toggle="false" 
+                    data-toolbar-align="left"
+                    data-show-fullscreen="false" 
+                    data-pagination="true"
+                    data-classes="
+                        table 
+                        table-responsive
+                        table-hover
+                        align-middle">
+                <thead class="bg-light">
                         <tr>
                             <th data-field="state" data-checkbox="true"></th>
                             <th data-field="id" data-visible="false">id</th>
-                            <th data-field="budget_name">Budget name</th>
-                            <th data-field="amount">Amount</th>
-                            <th data-field="start_date">From date</th>
-                            <th data-field="end_date">To date</th>
-                            <th data-field="user">User</th>
-                            <th data-field="action">Edit</th>
+                            <th data-field="budget_name" data-sortable="true">Budget name</th>
+                            <th data-field="amount" data-sortable="true">Amount</th>
+                            <th data-field="start_date" data-sortable="true">From date</th>
+                            <th data-field="end_date" data-sortable="true">To date</th>
+                            <th data-field="action" data-sortable="true">Edit</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,7 +54,6 @@
                             <td>{{ obj.amount }}</td>
                             <td>{{ obj.start_date }}</td>
                             <td>{{ obj.end_date }}</td>
-                            <td>{{ obj.user }}</td>
                             <td>
                                 <button class="btn btn-outline-secondary btn-sm edit-button" data-id="{{ obj.id }}">Click</>
                             </td>
