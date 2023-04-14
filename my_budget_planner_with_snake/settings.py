@@ -137,3 +137,12 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 SESSION_COOKIE_HTTPONLY = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 60 * 60 * 24 #24h
+
+#SMTP configuration
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_HOST = ''
+EMAIL_HOST_PORT = ''
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
