@@ -28,8 +28,8 @@ def edit_profile(request):
         user_form = UpdateUserForm(request.POST, instance=request.user)
         if user_form.is_valid():
             user_form.save()
-            # messages.success(request, 'Your Profile has been updated!')
-            return redirect('planner:dashboard')
+
+            return render(request, 'account/user_profile.html', {})
 
     else:
         user_form = UpdateUserForm(instance=request.user)
