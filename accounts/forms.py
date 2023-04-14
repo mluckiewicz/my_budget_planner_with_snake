@@ -14,4 +14,8 @@ class UserRegistrationForm(forms.ModelForm):
         if cd['password'] != cd['password2']:
             raise forms.ValidationError('Hasła nie są identyczne.')
         return cd['password2']
-            
+
+class UpdateUserForm(forms.ModelForm):
+    class Meta(forms.ModelForm):
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name']
