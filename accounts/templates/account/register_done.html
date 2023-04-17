@@ -1,7 +1,28 @@
 {% extends "base.html" %}
-{% block title %}Witaj{% endblock %}
+
+
+{% block title %}BP | Welcome {% endblock %}
+
+
 {% block content %}
-<h1>Witaj, {{ new_user.first_name }}!</h1>
-<p>Twoje konto zostało utworzone. Możesz się już <a
-href="{% url 'login' %}">zalogować</a>.</p>
+<div class="container-fluid h-100">
+    <div class="row justify-content-center align-items-center h-100">
+        <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="mb-4 border-bottom solid">
+                <i class="bi bi-piggy-bank fs-2">&nbsp;</i>
+                <span class="fs-2"><b>BUDGET</b>PLANNER</a></span>
+            </div>
+            <h1>Welcome!</h1>
+            <p>Your account has been created. Please login:</p>
+            <div class="form-group d-grid gap-2 mb-3">
+                <a href="{%url 'login' %}" class="btn btn-primary">Login</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 {% endblock %}
+
+
+}
