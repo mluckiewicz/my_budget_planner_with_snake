@@ -46,12 +46,6 @@ class AuthRedirectView(RedirectView):
 
     If the user is authenticated, this view will redirect to the dashboard page
     using the URL defined by the 'planner:dashboard' named URL pattern.
-
-<<<<<<< HEAD
-    context = {'form': form}
-    return render(request, 'register.html', context)
-
-=======
     If the user is not authenticated, this view will call the 'get_redirect_url'
     method of the parent class to get the redirect URL. By default, this will
     redirect to the URL defined by the 'login' named URL pattern.
@@ -59,7 +53,7 @@ class AuthRedirectView(RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         if self.request.user.is_authenticated:
-            return reverse_lazy('planner:dashboard')
+            return reverse_lazy('dashboard:dashboard')
         else:
             return super().get_redirect_url(*args, **kwargs)
         
@@ -68,34 +62,8 @@ class AuthLoginview(LoginView):
     """
     Displays the login page and logs the user in if valid credentials are submitted.
 
-<<<<<<< HEAD
-def logout_page(request):
-    logout(request)
-    return redirect('login')
-
-
-def user_profile(request):
-    context = {}
-    return render(request, 'user_profile.html', context)
-
-
-def edit_profile(request):
-    if request.method == 'POST':
-        user_form = UpdateUserForm(request.POST, instance=request.user)
-        if user_form.is_valid():
-            user_form.save()
-            messages.success(request, 'Your Profile has been updated!')
-            return redirect('dashboard')
-    else:
-        user_form = UpdateUserForm(instance=request.user)
-    context = {'user_form': user_form}
-    return render(request, 'edit_profile.html', context)
-
-
-=======
     This view is based on Django's built-in 'LoginView' class and inherits all of
     its functionality, including form validation, authentication, and redirecting.
-
     By default, this view will use the 'account/login.html' template and will
     redirect authenticated users to the dashboard URL defined by the 'planner:dashboard'
     named URL pattern. This behavior can be customized by setting the 'template_name',
@@ -111,5 +79,5 @@ def edit_profile(request):
     """
     template_name = 'account/login.html'
     redirect_authenticated_user = True
-    success_url = reverse_lazy('planner:dashboard')
+    success_url = reverse_lazy('dashboard:dashboard')
     

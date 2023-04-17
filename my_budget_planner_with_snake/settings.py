@@ -33,7 +33,10 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
-    'planner.apps.PlannerConfig',
+    'categories.apps.CategoriesConfig',
+    'budgets.apps.BudgetsConfig',
+    'transactions.apps.TransactionsConfig',
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -59,7 +62,7 @@ ROOT_URLCONF = 'my_budget_planner_with_snake.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,7 +131,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = 'planner:dashboard'
+LOGIN_REDIRECT_URL = 'dashboard:dashboard'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 

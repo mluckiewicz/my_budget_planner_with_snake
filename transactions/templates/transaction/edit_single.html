@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+
+{% block title %}BP | Edit single{% endblock %}
+
+
+{% block content %}
+<div class="container form-container  mt-5">
+    <div class="p-3 bg-white border border-light rounded shadow">
+        <div class="row px-2">
+            <span class="mb-2 border-bottom border-2">
+                <h1 class="fs-3">Edit transaction</h1>
+            </span>
+            <form action="." method="post">
+                {% csrf_token %}
+                <div class="row pb-2">
+                    <div class="col">
+                        {{form.type.errors}}
+                        <label for="{{form.type.name}}" class="form-label">{{form.type.label}}</label>
+                        {{form.type|add_class:"form-select"}}
+                    </div>
+                </div>
+                <div class="row pb-2">
+                    <div class="col">
+                        {{form.amount.errors}}
+                        <label for="{{form.amount.name}}" class="form-label">{{form.amount.label}}</label>
+                        <div class="input-group">
+                            {{form.amount|add_class:"form-control"}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row pb-2">
+                    <div class="col">
+                        {{form.category.errors}}
+                        <label for="{{form.category.name}}" class="form-label">{{form.category.label}}</label>
+                        <div class="input-group">
+                            {{form.category|add_class:"form-select"}}
+                            <a href="{% url 'categories:add_category' %}?back_url={{ request.path }}"
+                                class="btn btn-outline-secondary btn-sm"><i class="bi bi-plus-circle fs-5"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row pb-2">
+                    <div class="col">
+                        {{form.budget.errors}}
+                        <label for="{{form.budget.name}}" class="form-label">{{form.budget.label}}</label>
+                        <div class="input-group">
+                            {{form.budget|add_class:"form-select"}}
+                            <a href="{% url 'budgets:add_budget' %}?back_url={{ request.path }}"
+                                class="btn btn-outline-secondary btn-sm"><i class="bi bi-plus-circle fs-5"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row pb-2">
+                    <div class="col col-7">
+                        {{form.execution_date.errors}}
+                        <label for="{{form.execution_date.name}}"
+                            class="form-label">{{form.execution_date.label}}</label>
+                        <div class="">
+                            {{form.execution_date|add_class:"form-control"|attr:"type:date"|attr:"placeholder:yyyy-mm-dd"}}
+                        </div>
+                    </div>
+                    <div class="col col-5 d-flex align-items-center">
+                        <div class="form-check">
+                            {{form.is_executed}}
+                            <label for="{{form.is_executed.name}}"
+                                class="form-check-label">{{form.is_executed.label}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row pb-2">
+                    <div class="col">
+                        {{form.description.errors}}
+                        <label for="{{form.description.name}}" class="form-label">{{form.description.label}}</label>
+                        <div class="">
+                            {{form.description|add_class:"form-control"}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row pt-4">
+                    <div class="d-grid gap-2 col-6 mx-auto" style="width: 100%">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                        <a href="{{ back_url }}" class="btn btn-outline-secondary btn-sm">Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
