@@ -2,7 +2,7 @@ from __future__ import annotations
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.http import JsonResponse
-from django.views.generic import View
+from django.views.generic import View, TemplateView
 from django.views.generic.edit import UpdateView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -101,16 +101,20 @@ class AddRepeatableTransactionView(View):
 
 
 @method_decorator(login_required, name="dispatch")
-class TransactionTableView(View):
-    model = Transaction
+class TransactionTableView(TemplateView):
     template_name = "transaction/table.html"
-    context_object_name = "transactions"
 
-    def get(self, request):
-        context = {}
-        transactions = self.model.objects.all()
-        context["transactions"] = transactions
-        return render(request, self.template_name, context)
+    # def get(self, request):
+    #     context = {}
+    #     single_transactions = Transaction.objects.all()
+    #     context["single_transactions"] = single_transactions
+    #     return render(request, self.template_name, context)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['single_transactions'] = Transaction.objects.all()
+        context['repeatable_transactions'] = RepeatableTransaction.objects.all()
+        return context
 
 
 @method_decorator(login_required, name="dispatch")
@@ -127,7 +131,11 @@ def delete_transactions(request) -> JsonResponse[dict]:
     """
     if request.method == "POST":
         ids = request.POST.getlist("ids[]")
-        Transaction.objects.filter(id__in=ids).delete()
+        print(request.POST.getlist("table"))
+        if request.POST.getlist("table")[0] == 'table_single':
+            Transaction.objects.filter(id__in=ids).delete()
+        else:
+            RepeatableTransaction.objects.filter(id__in=ids).delete()
         return JsonResponse({"success": True})
     else:
         return JsonResponse({"success": False, "message": "Invalid request method"})

@@ -1,7 +1,8 @@
     // Define the deleteRows function
-    function deleteRows() {
+    function deleteRows(table_name) {
         // Get the selected rows
-        var selectedRows = $('#table').bootstrapTable('getSelections');
+        var table = document.getElementById(table_name);
+        var selectedRows = $(table).bootstrapTable('getSelections');
         var csrf_token = document.querySelector('script[src$="table_delete_rows.js"]').getAttribute('data-csrf-token')
         // Check if any rows are selected
         if (selectedRows.length > 0) {
@@ -24,7 +25,7 @@
                         url: delete_url,
                         type: 'POST',
                         headers: { "X-CSRFToken": csrf_token },
-                        data: { 'ids': ids, csrfmiddlewaretoken: csrf_token },
+                        data: { 'ids': ids, 'table': table_name, csrfmiddlewaretoken: csrf_token },
                         dataType: 'json',
                         success: function (data) {
                             if (data.success) {

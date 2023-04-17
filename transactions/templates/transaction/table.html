@@ -13,62 +13,126 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div id="toolbar">
-                    <a href="{% url 'transactions:add_single' %}?back_url={{ request.path }}"
+                {% url 'transactions:add_single' as add_single_url %}
+                {% url 'transactions:add_repeatable' as add_repeatable_url %}
+                <div id="toolbar_single">
+                    <a href="{{ add_single_url }}?back_url={{ request.path }}"
                         class="btn btn-outline-success"><i class="bi bi-calendar-event fs-5"></i>
                     </a>
-                    <a href="{% url 'transactions:add_repeatable' %}?back_url={{ request.path }}"
-                        class="btn btn-outline-success"><i
-                        class="bi bi-calendar-week fs-5"></i>
+                    <a href="{{ add_repeatable_url }}?back_url={{ request.path }}"
+                        class="btn btn-outline-success"><i class="bi bi-calendar-week fs-5"></i>
                     </a>
-                    <button type="button" class="btn btn-outline-danger" onclick="deleteRows()"><i class="bi bi-trash fs-5"></i></button>
+                    <button type="button" class="btn btn-outline-danger" onclick="deleteRows('table_single')"><i
+                            class="bi bi-trash fs-5"></i></button>
                 </div>
-                <table id="table" 
-                    data-select-item-name="selected" 
-                    data-toggle="table" 
-                    data-search="true"
-                    data-show-columns="false"
-                    data-toolbar="#toolbar" 
-                    data-show-toggle="false" 
-                    data-toolbar-align="left"
-                    data-show-fullscreen="false" 
-                    data-pagination="true"
-                    data-classes="
-                            table 
+                <div id="toolbar_repeatable">
+                    <a href="{{ add_single_url }}?back_url={{ request.path }}"
+                        class="btn btn-outline-success"><i class="bi bi-calendar-event fs-5"></i>
+                    </a>
+                    <a href="{{ add_repeatable_url }}?back_url={{ request.path }}"
+                        class="btn btn-outline-success"><i class="bi bi-calendar-week fs-5"></i>
+                    </a>
+                    <button type="button" class="btn btn-outline-danger" onclick="deleteRows('table_repeatable')"><i
+                            class="bi bi-trash fs-5"></i></button>
+                </div>
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
+                            data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
+                            aria-selected="true">All</button>
+                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
+                            type="button" role="tab" aria-controls="nav-profile"
+                            aria-selected="false">Repeatable</button>
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <table id="table_single" data-select-item-name="selected" data-toggle="table" data-search="true"
+                            data-show-columns="false" data-toolbar="#toolbar_single" data-show-toggle="false"
+                            data-toolbar-align="left" data-show-fullscreen="false" data-pagination="true" data-classes="
+                                table
+                                table-sm
+                                table-responsive
+                                table-hover
+                                align-middle">
+                            <thead class="bg-light">
+                                <th data-field="state" data-checkbox="true"></th>
+                                <th data-field="id" data-visible="false" data-sortable="true">id</th>
+                                <th data-field="execution_date" data-sortable="true">Execution date</th>
+                                <th data-field="category_name" data-sortable="true">Category name</th>
+                                <th data-field="type" data-sortable="true">Type</th>
+                                <th data-field="amount" data-sortable="true">Amount</th>
+                                <th data-field="description" data-sortable="true">Description</th>
+                                <th data-field="is_executed" data-sortable="true">Is executed?</th>
+                                <th data-field="budget" data-sortable="true">Budget</th>
+                                <th data-field="action">Edit</th>
+                            </thead>
+                            <tbody>
+                                {% for obj in single_transactions %}
+                                <tr>
+                                    <td></td>
+                                    <td>{{ obj.id }}</td>
+                                    <td>{{ obj.description }}</td>
+                                    <td>{{ obj.category }}</td>
+                                    <td>{{ obj.type }}</td>
+                                    <td>{{ obj.amount }}</td>
+                                    <td>{{ obj.description }}</td>
+                                    <td>{{ obj.is_executed }}</td>
+                                    <td>{{ obj.budget }}</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary btn-sm edit-button"
+                                            data-id="{{ obj.id }}"><i class="bi bi-pencil-square"></i></>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                        <table id="table_repeatable" data-select-item-name="selected" data-toggle="table" data-search="true"
+                            data-show-columns="false" data-toolbar="#toolbar_repeatable" data-show-toggle="false"
+                            data-toolbar-align="left" data-show-fullscreen="false" data-pagination="true" data-classes="
+                            table
+                            table-sm
                             table-responsive
                             table-hover
                             align-middle">
-                    <thead class="bg-light">
-                            <th data-field="state" data-checkbox="true"></th>
-                            <th data-field="id" data-visible="false" data-sortable="true">id</th>
-                            <th data-field="execution_date" data-sortable="true">Execution date</th>
-                            <th data-field="category_name" data-sortable="true">Category name</th>
-                            <th data-field="type" data-sortable="true">Type</th>
-                            <th data-field="amount" data-sortable="true">Amount</th>
-                            <th data-field="description" data-sortable="true">Description</th>
-                            <th data-field="is_executed" data-sortable="true">Is executed?</th>
-                            <th data-field="budget" data-sortable="true">Budget</th>
-                            <th data-field="action">Edit</th>
-                    </thead>
-                    <tbody>
-                        {% for obj in transactions %}
-                        <tr>
-                            <td></td>
-                            <td>{{ obj.id }}</td>
-                            <td>{{ obj.execution_date }}</td>
-                            <td>{{ obj.category }}</td>
-                            <td>{{ obj.type }}</td>
-                            <td>{{ obj.amount }}</td>
-                            <td>{{ obj.description }}</td>
-                            <td>{{ obj.is_executed }}</td>
-                            <td>{{ obj.budget }}</td>
-                            <td>
-                                <button class="btn btn-outline-secondary btn-sm edit-button" data-id="{{ obj.id }}"><i class="bi bi-pencil-square"></i></>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                            <thead class="bg-light">
+                                <th data-field="state" data-checkbox="true"></th>
+                                <th data-field="id" data-visible="false" data-sortable="true">id</th>
+                                <th data-field="description" data-sortable="true">Description</th>
+                                <th data-field="base_amout" data-sortable="true">Amount</th>
+                                <th data-field="start_date" data-sortable="true">Start</th>
+                                <th data-field="end_date" data-sortable="true">End</th>
+                                <th data-field="recurrence_type" data-sortable="true">Recurrence type</th>
+                                <th data-field="category" data-sortable="true">Category</th>
+                                <th data-field="type" data-sortable="true">Type</th>
+                                <th data-field="budget" data-sortable="true">Budget</th>
+                                <th data-field="action">Edit</th>
+                            </thead>
+                            <tbody>
+                                {% for obj in repeatable_transactions %}
+                                <tr>
+                                    <td></td>
+                                    <td>{{ obj.id }}</td>
+                                    <td>{{ obj.description }}</td>
+                                    <td>{{ obj.base_amout }}</td>
+                                    <td>{{ obj.start_date }}</td>
+                                    <td>{{ obj.end_date }}</td>
+                                    <td>{{ obj.recurrence_type }}</td>
+                                    <td>{{ obj.category }}</td>
+                                    <td>{{ obj.type }}</td>
+                                    <td>{{ obj.budget }}</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary btn-sm edit-button"
+                                            data-id="{{ obj.id }}"><i class="bi bi-pencil-square"></i></>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -80,4 +144,5 @@
 </script>
 <script src="{% static 'js/table_button_delegation.js' %}"></script>
 <script src="{% static 'js/table_delete_rows.js' %}" data-csrf-token='{{ csrf_token }}'></script>
+
 {% endblock content %}
