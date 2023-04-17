@@ -43,6 +43,9 @@
                         {{form.password2|add_class:"form-control form-control-lg"}}
                     </div>
 
+                    {{ form.errors }}
+                    {{ form.non_field_errors }}
+
                     <div class="form-group d-grid gap-2 mb-3">
                         <input class="btn btn-primary" type="submit" value="Register">
                     </div>
