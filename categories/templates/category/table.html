@@ -17,7 +17,7 @@
                     <a href="{% url 'categories:add_category' %}?back_url={{ request.path }}"
                         class="btn btn-outline-success"><i class="bi bi-plus-circle fs-5"></i>
                     </a>
-                    <button type="button" class="btn btn-outline-danger" onclick="deleteRows()"><i class="bi bi-trash fs-5"></i></button>
+                    <button type="button" class="btn btn-outline-danger" onclick="deleteRows('table')"><i class="bi bi-trash fs-5"></i></button>
                 </div>
                 <table id="table" 
                     data-select-item-name="selected" 
