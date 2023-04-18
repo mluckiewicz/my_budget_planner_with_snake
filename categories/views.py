@@ -49,7 +49,7 @@ class AddCategoryView(View):
             user_category.save()
 
             # Redirect back to main form
-            back_url = request.POST.get("back_url", None)
+            back_url = request.POST.get("back_url", '/category/')
             if back_url is not None and back_url != "None":
                 return redirect(back_url)
             return redirect(request.path)
@@ -63,7 +63,7 @@ class AddCategoryView(View):
             context["form"] = form
         else:
             context["form"] = self.form_class()
-        context["back_url"] = request.GET.get("back_url", None)
+        context["back_url"] = request.GET.get("back_url", '/category/')
         return context
 
 
