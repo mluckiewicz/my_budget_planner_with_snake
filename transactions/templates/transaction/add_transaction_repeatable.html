@@ -10,21 +10,35 @@
 <div class="container form-container  mt-5">
     <div class="p-3 bg-white border border-light rounded shadow">
         <div class="row px-2">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-danger">
+                        <p>{{ message }}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% if form.errors %}
+            <div class="alert alert-danger">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        {% endif %}
             <span class="mb-2 border-bottom border-2">
-                <h1 class="fs-3">Add new repeatable transaction</h1>
+                <h1 class="fs-3">Add repeatable transaction</h1>
             </span>
             <form action="." method="post">
                 {% csrf_token %}
                 <div class="row pb-2">
                     <div class="col">
-                        {{form.type.errors}}
                         <label for="{{form.type.name}}" class="form-label">{{form.type.label}}</label>
                         {{form.type|add_class:"form-select"}}
                     </div>
                 </div>
                 <div class="row pb-2">
                     <div class="col">
-                        {{form.base_amout.errors}}
                         <label for="{{form.base_amout.name}}" class="form-label">{{form.base_amout.label}}</label>
                         <div class="input-group">
                             {{form.base_amout}}
@@ -33,7 +47,6 @@
                 </div>
                 <div class="row pb-2">
                     <div class="col">
-                        {{form.category.errors}}
                         <label for="{{form.category.name}}" class="form-label">{{form.category.label}}</label>
                         <div class="input-group">
                             {{form.category|add_class:"form-select"}}
@@ -44,7 +57,6 @@
                 </div>
                 <div class="row pb-2">
                     <div class="col">
-                        {{form.budget.errors}}
                         <label for="{{form.budget.name}}" class="form-label">{{form.budget.label}}</label>
                         <div class="input-group">
                             {{form.budget|add_class:"form-select"}}
@@ -55,14 +67,12 @@
                 </div>
                 <div class="row pb-2">
                     <div class="col col-6">
-                        {{form.start_date.errors}}
                         <label for="{{form.start_date.name}}" class="form-label">{{form.start_date.label}}</label>
                         <div class="">
                             {{form.start_date|add_class:"form-control"|attr:"type:date"|attr:"placeholder:yyyy-mm-dd"}}
                         </div>
                     </div>
                     <div class="col col-6">
-                        {{form.end_date.errors}}
                         <label for="{{form.end_date.name}}" class="form-label">{{form.end_date.label}}</label>
                         <div class="">
                             {{form.end_date|add_class:"form-control"|attr:"type:date"|attr:"placeholder:yyyy-mm-dd"}}
@@ -71,7 +81,6 @@
                 </div>
                 <div class="row pb-2">
                     <div class="col col-6">
-                        {{form.recurrence_type.errors}}
                         <label id="label_{{form.recurrence_type.name}}" for="{{form.recurrence_type.name}}"
                             class="form-label">{{form.recurrence_type.label}}</label>
                         <div class="">
@@ -79,7 +88,6 @@
                         </div>
                     </div>
                     <div class="col col-6">
-                        {{form.recurrence_value.errors}}
                         <label id="label_{{form.recurrence_value.name}}" for="{{form.recurrence_value.name}}"
                             class="form-label">{{form.recurrence_value.label}}</label>
                         <div class="">
@@ -89,7 +97,6 @@
                 </div>
                 <div class="row pb-2">
                     <div class="col">
-                        {{form.description.errors}}
                         <label for="{{form.description.name}}" class="form-label">{{form.description.label}}</label>
                         <div class="">
                             {{form.description|add_class:"form-control"}}
@@ -98,8 +105,8 @@
                 </div>
                 <div class="row pt-4">
                     <div class="d-grid gap-2 col-6 mx-auto" style="width: 100%">
-                        <button type="submit" class="btn btn-primary">Dodaj transakcję</button>
-                        <a href="{{ back_url }}" class="btn btn-outline-secondary btn-sm">Anuluj</a>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                        <a href="{{ back_url }}" class="btn btn-outline-secondary">Cancel</a>
                     </div>
                 </div>
                 <input type="hidden" name="back_url" value="{{ back_url }}">
