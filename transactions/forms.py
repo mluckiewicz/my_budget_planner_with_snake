@@ -1,6 +1,8 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import MinValueValidator, MaxValueValidator
 from djmoney.forms.widgets import MoneyWidget
+
 from .models import RepeatableTransaction, Transaction
 
 
@@ -47,7 +49,6 @@ class AddSingleTransactionForm(forms.ModelForm):
                     choices=currency_choices),
                 default_currency = "PLN"
                 ),
-
             "description": forms.widgets.Textarea(attrs={"rows": "3"})
         }
 
@@ -73,15 +74,15 @@ class AddRepeatableTransactionForm(forms.ModelForm):
             "budget",
         )
         labels = {
-            "type": _("Typ"),
-            "base_amout": _("Kwota"),
-            "category": _("Kategoria"),
-            "budget": _("Budżet"),
-            "start_date": _("Od kiedy"),
-            "end_date": _("Do kiedy"),
-            "recurrence_type": _("Rodzaj cyklu"),
-            "recurrence_value": _("Długość cyklu"),
-            "description": _("Opis")
+            "type": _("Type"),
+            "base_amout": _("Base Amount"),
+            "category": _("Category"),
+            "budget": _("Budget"),
+            "start_date": _("From date"),
+            "end_date": _("To date"),
+            "recurrence_type": _("Period type"),
+            "recurrence_value": _("Period lenght"),
+            "description": _("Description")
         }
         widgets = {
             "type": forms.widgets.Select(attrs={"required": True}),
@@ -90,7 +91,7 @@ class AddRepeatableTransactionForm(forms.ModelForm):
                     attrs={
                         "min":0,
                         "step":0.01,
-                        "placeholder": _("Wprowadź kwotę"),
+                        "placeholder": _("Amount"),
                         "class": "form-control"},
                     
                 ),
@@ -99,6 +100,33 @@ class AddRepeatableTransactionForm(forms.ModelForm):
                     choices=currency_choices),
                 default_currency = "PLN"
                 ),
-
+            "recurrence_value": forms.widgets.NumberInput(
+                    attrs={
+                        "min":0,
+                        "step":1,
+                        "placeholder": _("Amount"),
+                        "class": "form-control"},
+                    
+                ), 
             "description": forms.widgets.Textarea(attrs={"rows": "3"})
         }
+        validators = {
+            "recurrence_value": [
+                MinValueValidator(1), 
+                MaxValueValidator(366)
+            ]
+        }
+        
+    def clean_recurrence_value(self):
+        max_values = {
+            'DAILY': 1,
+            'WEEKLY': 7,
+            'MONTHLY': 31,
+            'ANNUALLY': 366,
+        }
+        choice = self.cleaned_data.get('recurrence_type')
+        max_value = max_values.get(choice)
+        number = self.cleaned_data.get('recurrence_value')
+        if number > max_value:
+            raise forms.ValidationError(f'Maksymalna dozwolona wartość dla opcji {choice} to {max_value}.')
+        return number
