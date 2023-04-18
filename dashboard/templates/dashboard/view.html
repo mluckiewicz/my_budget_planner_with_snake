@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <!-- Modal -->
+    <div class="modal fade" id="addModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button id="modalClose1" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Description:</strong> <span id="eventDescription"></span></p>
+                    <p><strong>Execution date:</strong> <span id="eventStart"></span></p>
+                    <p><strong>Amount:</strong> <span id="eventAmountValue"></span></p>
+                    <p><strong>Currency:</strong> <span id="eventAmountCurrency"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button id="modalClose1" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-3 bg-white border border-light rounded shadow">
+        <div id='calendar'></div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            headerToolbar: {
+                center: 'dayGridMonth,timeGridWeek'
+
+            },
+            selectable: true,
+            initialView: 'dayGridMonth',
+            events: '{% url "dashboard:data" %}',
+            eventClick: function (info) {
+                var modal = document.getElementById('staticBackdrop')
+                modal.style.display = 'block'
+                modal.querySelector('#staticBackdropLabel').textContent = info.event.title;
+                modal.querySelector('#eventStart').textContent = info.event.start.toLocaleString('pl-PL', {day: 'numeric', month: 'numeric', year: 'numeric'});
+                modal.querySelector('#eventAmountValue').textContent = info.event.extendedProps.amount.amount;
+                modal.querySelector('#eventAmountCurrency').textContent = info.event.extendedProps.amount.currency;
+                calendar.unselect()
+                
+                var modal = new bootstrap.Modal(modal);
+                modal.show();
+            },
+            select: function(arg) {
+                console.log('clicked')
+                var addModal = document.getElementById('addModal')
+                var addModal = new bootstrap.Modal(addModal);
+                addModal.show();
+              },
+        
+        });
+        calendar.render();
+
+    });
+    const closeBtn1 = document.getElementById('modalClose1');
+    closeBtn1.addEventListener('click', () => {
+        const eventModal = document.getElementById('staticBackdrop')
+        eventModal.style.display = 'none';
+    });
+
+</script>
+{% endblock content %}
