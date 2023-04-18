@@ -6,20 +6,21 @@ function changeLabelValue(dropdown_id, label_id, period_selector_id) {
 
     dropdown.addEventListener("change", function() {
         if (dropdown.value === "DAILY") {
+            period_selector.value = 1;
             period_selector.disabled = true;
-            label.textContent = "Typ okresu powtarzalności";
+            period_selector.textContent = "Not applicable";
         } else if (dropdown.value === "WEEKLY") {
             period_selector.disabled = false;
-            label.textContent = "Numer dnia w tygodniu";
+            label.textContent = "Day of the week";
+            period_selector.placeholder  = "From 1 to 7";
         } else if (dropdown.value === "MONTHLY") {
             period_selector.disabled = false;
-            label.textContent = "Numer dnia w miesiącu";
-        } else if (dropdown.value === "QUATERLY") {
-            period_selector.disabled = false;
-            label.textContent = "Numer dnia w kwartale";
+            label.textContent = "Day of the week";
+            period_selector.placeholder  = "From 1 to 31";
         } else if (dropdown.value === "ANNUALLY") {
             period_selector.disabled = false;
-            label.textContent = "Numer dnia w roku";
+            label.textContent = "Day of the year";
+            period_selector.placeholder  = "From 1 to 366";
         }
     });
 };
