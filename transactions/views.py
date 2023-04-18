@@ -2,7 +2,8 @@ from __future__ import annotations
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.http import JsonResponse
-from django.views.generic import View, TemplateView
+from django.contrib import messages
+from django.views.generic import View
 from django.views.generic.edit import UpdateView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -40,8 +41,13 @@ class AddSingleTransactionView(View):
             if back_url is not None and back_url != "None":
                 return redirect(back_url)
             return redirect(request.path)
+        else:
+            # Form is not valid, display errors
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field.capitalize()}: {error}")
 
-        return render(request, self.template_name, self.get_context(request))
+        return render(request, self.template_name, self.get_context(request, form))
 
     def get_context(self, request, form=None):
         # Helper method to generate a dictionary with data to pass to the template
@@ -50,7 +56,7 @@ class AddSingleTransactionView(View):
             context["form"] = form
         else:
             context["form"] = self.form_class()
-        context["back_url"] = request.GET.get("back_url", None)
+        context["back_url"] = request.GET.get("back_url", '/transactions/')
         return context
 
 
@@ -83,11 +89,12 @@ class AddRepeatableTransactionView(View):
 
             # Redirect back to main form
             back_url = request.POST.get("back_url", None)
+            
             if back_url is not None and back_url != "None":
                 return redirect(back_url)
             return redirect(request.path)
 
-        return render(request, self.template_name, self.get_context(request))
+        return render(request, self.template_name, self.get_context(request, form=form))
 
     def get_context(self, request, form=None):
         # Helper method to generate a dictionary with data to pass to the template
@@ -96,25 +103,19 @@ class AddRepeatableTransactionView(View):
             context["form"] = form
         else:
             context["form"] = self.form_class()
-        context["back_url"] = request.GET.get("back_url", None)
+        context["back_url"] = request.GET.get("back_url", '/transactions/')
         return context
 
 
 @method_decorator(login_required, name="dispatch")
-class TransactionTableView(TemplateView):
+class TransactionTableView(View):
     template_name = "transaction/table.html"
 
-    # def get(self, request):
-    #     context = {}
-    #     single_transactions = Transaction.objects.all()
-    #     context["single_transactions"] = single_transactions
-    #     return render(request, self.template_name, context)
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get(self, request):
+        context = {}
         context['single_transactions'] = Transaction.objects.all()
         context['repeatable_transactions'] = RepeatableTransaction.objects.all()
-        return context
+        return render(request, self.template_name, context)
 
 
 @method_decorator(login_required, name="dispatch")
@@ -131,7 +132,6 @@ def delete_transactions(request) -> JsonResponse[dict]:
     """
     if request.method == "POST":
         ids = request.POST.getlist("ids[]")
-        print(request.POST.getlist("table"))
         if request.POST.getlist("table")[0] == 'table_single':
             Transaction.objects.filter(id__in=ids).delete()
         else:
