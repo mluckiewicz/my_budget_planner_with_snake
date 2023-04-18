@@ -30,7 +30,7 @@
                         success: function (data) {
                             if (data.success) {
                                 // Remove the selected rows from the table
-                                $('#table').bootstrapTable('remove', {
+                                $(table).bootstrapTable('remove', {
                                     field: 'id',
                                     values: ids
                                 });
