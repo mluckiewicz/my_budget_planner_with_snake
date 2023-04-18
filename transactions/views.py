@@ -108,7 +108,7 @@ class TransactionTableView(View):
 
     def get(self, request):
         context = {}
-        transactions = self.model.objects.all()
+        transactions = self.model.objects.filter(user=request.user)
         context["transactions"] = transactions
         return render(request, self.template_name, context)
 
