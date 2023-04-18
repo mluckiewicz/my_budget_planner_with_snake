@@ -26,9 +26,6 @@
                             class="bi bi-trash fs-5"></i></button>
                 </div>
                 <div id="toolbar_repeatable">
-                    <a href="{{ add_single_url }}?back_url={{ request.path }}"
-                        class="btn btn-outline-success"><i class="bi bi-calendar-event fs-5"></i>
-                    </a>
                     <a href="{{ add_repeatable_url }}?back_url={{ request.path }}"
                         class="btn btn-outline-success"><i class="bi bi-calendar-week fs-5"></i>
                     </a>
@@ -59,7 +56,7 @@
                                 <th data-field="state" data-checkbox="true"></th>
                                 <th data-field="id" data-visible="false" data-sortable="true">id</th>
                                 <th data-field="execution_date" data-sortable="true">Execution date</th>
-                                <th data-field="category_name" data-sortable="true">Category name</th>
+                                <th data-field="category" data-sortable="true">Category name</th>
                                 <th data-field="type" data-sortable="true">Type</th>
                                 <th data-field="amount" data-sortable="true">Amount</th>
                                 <th data-field="description" data-sortable="true">Description</th>
@@ -72,7 +69,7 @@
                                 <tr>
                                     <td></td>
                                     <td>{{ obj.id }}</td>
-                                    <td>{{ obj.description }}</td>
+                                    <td>{{ obj.execution_date }}</td>
                                     <td>{{ obj.category }}</td>
                                     <td>{{ obj.type }}</td>
                                     <td>{{ obj.amount }}</td>
