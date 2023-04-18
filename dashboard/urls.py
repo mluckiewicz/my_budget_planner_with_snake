@@ -9,8 +9,9 @@ urlpatterns = [
 
     path(
         "",
-        views.dashboard,
+        views.DashboardView.as_view(),
         name="dashboard",
     ),
-\
+    path('data/', views.data, name='data'),
+
 ]
