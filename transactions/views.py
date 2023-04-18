@@ -56,7 +56,7 @@ class AddSingleTransactionView(View):
             context["form"] = form
         else:
             context["form"] = self.form_class()
-        context["back_url"] = request.GET.get("back_url", '/transactions/')
+        context["back_url"] = request.GET.get("back_url", "/transactions/")
         return context
 
 
@@ -89,7 +89,7 @@ class AddRepeatableTransactionView(View):
 
             # Redirect back to main form
             back_url = request.POST.get("back_url", None)
-            
+
             if back_url is not None and back_url != "None":
                 return redirect(back_url)
             return redirect(request.path)
@@ -103,7 +103,7 @@ class AddRepeatableTransactionView(View):
             context["form"] = form
         else:
             context["form"] = self.form_class()
-        context["back_url"] = request.GET.get("back_url", '/transactions/')
+        context["back_url"] = request.GET.get("back_url", "/transactions/")
         return context
 
 
@@ -113,8 +113,10 @@ class TransactionTableView(View):
 
     def get(self, request):
         context = {}
-        context['single_transactions'] = Transaction.objects.all()
-        context['repeatable_transactions'] = RepeatableTransaction.objects.all()
+        context["single_transactions"] = Transaction.objects.filter(user=request.user)
+        context["repeatable_transactions"] = RepeatableTransaction.objects.filter(
+            user=request.user
+        )
         return render(request, self.template_name, context)
 
 
@@ -132,7 +134,7 @@ def delete_transactions(request) -> JsonResponse[dict]:
     """
     if request.method == "POST":
         ids = request.POST.getlist("ids[]")
-        if request.POST.getlist("table")[0] == 'table_single':
+        if request.POST.getlist("table")[0] == "table_single":
             Transaction.objects.filter(id__in=ids).delete()
         else:
             RepeatableTransaction.objects.filter(id__in=ids).delete()
