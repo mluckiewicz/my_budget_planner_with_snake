@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
+    'dashboard.apps.DashboardConfig',
     'categories.apps.CategoriesConfig',
     'budgets.apps.BudgetsConfig',
     'transactions.apps.TransactionsConfig',
