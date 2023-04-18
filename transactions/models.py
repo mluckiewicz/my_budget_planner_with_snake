@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
 from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
 from djmoney.models.fields import MoneyField
@@ -95,3 +96,6 @@ class Transaction(models.Model):
     # Methods
     def __str__(self):
         return self.description
+    
+    def get_absolute_url(self):
+        return reverse('transactions:transaction_detail', args=(self.id,))
