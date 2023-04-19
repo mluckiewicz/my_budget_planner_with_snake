@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load widget_tweaks %}
 
 
@@ -88,4 +89,8 @@
         </div>
     </div>
 </div>
+<script type=text/javascript>
+    var type_to_category = '{{ type_to_category|escapejs }}';
+</script>
+<script src="{% static 'js/type_category_map.js' %}"></script>
 {% endblock content %}
