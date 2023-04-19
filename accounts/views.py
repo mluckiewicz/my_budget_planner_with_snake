@@ -1,5 +1,7 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views.generic import RedirectView
 from django.contrib.auth.views import LoginView
 from .forms import UserRegistrationForm, UpdateUserForm
@@ -17,15 +19,19 @@ def register(request):
         form = UserRegistrationForm()
     return render(request, "account/register.html", {"form": form})
 
+
 def register_done(request):
     context = {}
     return render(request, 'account/register_done.html', context)
 
+
+@login_required
 def user_profile(request):
     context = {}
     return render(request, 'account/user_profile.html', context)
 
 
+@login_required
 def edit_profile(request):
     if request.method == 'POST':
         user_form = UpdateUserForm(request.POST, instance=request.user)

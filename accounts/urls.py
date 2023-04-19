@@ -20,13 +20,26 @@ urlpatterns = [
     path('user_profile/', views.user_profile, name='user_profile'),
     path('edit_profile/', views.edit_profile, name='edit_profile'),
 
+    path('password_change/',
+         auth_views.PasswordChangeView.as_view(
+            template_name="account/password_change.html"
+         ),
+         name="password_change"
+    ),
 
+    path('password_change_done/',
+         auth_views.PasswordChangeDoneView.as_view(
+             template_name="account/password_change_done.html"
+         ),
+         name="password_change_done"
+         ),
 
     path("reset_password/", auth_views.PasswordResetView.as_view(
             template_name="account/password_reset.html"
         ),
         name="reset_password",
     ),
+
     path(
         "reset_password_sent/",
         auth_views.PasswordResetDoneView.as_view(

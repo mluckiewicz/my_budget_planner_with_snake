@@ -113,8 +113,8 @@ class TransactionTableView(View):
 
     def get(self, request):
         context = {}
-        context['single_transactions'] = Transaction.objects.all()
-        context['repeatable_transactions'] = RepeatableTransaction.objects.all()
+        context['single_transactions'] = Transaction.objects.filter(user=request.user)
+        context['repeatable_transactions'] = RepeatableTransaction.objects.filter(user=request.user)
         return render(request, self.template_name, context)
 
 
