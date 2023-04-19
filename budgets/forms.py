@@ -20,10 +20,10 @@ class AddBudgetForm(forms.ModelForm):
             "end_date",
         )
         labels = {
-            "budget_name": _("Naazwa budżetu"),
-            "amount": _("Kwota"),
-            "start_date": _("Od kiedy obowiązuje"),
-            "end_date": _("Do kiedy obowiązuje"),
+            "budget_name": _("Budget name"),
+            "amount": _("Amount"),
+            "start_date": _("From date"),
+            "end_date": _("To date"),
         }
         widgets = {
             "amount": MoneyWidget(
@@ -31,7 +31,7 @@ class AddBudgetForm(forms.ModelForm):
                     attrs={
                         "min":0,
                         "step":0.01,
-                        "placeholder": _("Wprowadź kwotę"),
+                        "placeholder": _("Amount"),
                         "class": "form-control"},
                     
                 ),
