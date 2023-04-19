@@ -74,6 +74,13 @@ class CategoryUpdateView(UpdateView):
     template_name = "category/edit.html"
     success_url = reverse_lazy("categories:categories")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form = kwargs.get("form", None)
+        context["form"] = form if form else self.form_class()
+        context["back_url"] = self.request.GET.get("back_url", "/categories/")
+        return context
+
 
 def delete_categories(request) -> JsonResponse[dict]:
     """
