@@ -5,7 +5,7 @@ from accounts.views import AuthRedirectView
 
 urlpatterns = [
     path('', AuthRedirectView.as_view(pattern_name="login")),
-    path('account/', include('accounts.urls')),
+    path('accounts/', include('accounts.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('categories/', include('categories.urls')),
     path('budgets/', include('budgets.urls')),

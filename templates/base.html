@@ -47,7 +47,7 @@
                     <a href="{% url 'budgets:budgets' %}"
                         class="nav-link text-primary {% if request.path == '/budgets/'  %}active_underline{% endif %}"><i
                             class="bi bi-cash-stack fs-4"></i></a>
-                    <a href="#"
+                    <a href="{% url 'user_profile' %}"
                         class="nav-link text-primary {% if request.path == '/accounts/user_profile/' %}active_underline{% endif %}"><i
                             class="bi bi-person-circle fs-4"></i></a>
                     <a href="{% url 'logout' %}"

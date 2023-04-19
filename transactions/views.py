@@ -1,4 +1,5 @@
 from __future__ import annotations
+import json
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.http import JsonResponse
@@ -9,10 +10,57 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .forms import AddSingleTransactionForm, AddRepeatableTransactionForm
 from .models import Transaction, RepeatableTransaction
+from categories.models import Type, Category, UserCategory
+
+
+class TransactionMixin:
+    """A mixin for views that deal with transactions."""
+
+    def get_context(self, request, form=None):
+        """Generate a dictionary with data to pass to the template.
+
+        Args:
+            request: An HttpRequest object.
+            form: An optional Form object.
+
+        Returns:
+            A dictionary with the form, back URL, and type-to-category mapping.
+        """
+        context = {}
+        if form:
+            context["form"] = form
+        else:
+            context["form"] = self.form_class()
+        context["back_url"] = request.GET.get("back_url", "/transactions/")
+        context["type_to_category"] = self.get_categories(request)
+        return context
+
+    def get_categories(self, request):
+        """Retrieve available categories for each transaction type.
+
+        Args:
+            request: An HttpRequest object.
+
+        Returns:
+            A JSON-formatted string representing a dictionary mapping transaction types 
+            to lists of available categories.
+        """
+        types = Type.objects.all()
+        user_categories = UserCategory.objects.filter(user=request.user)
+        categories = Category.objects.filter(
+            id__in=user_categories.values_list("category_id", flat=True)
+        )
+
+        type_to_category = {}
+        for t in types:
+            category_list = [[c.id, c.category_name] for c in categories if c.type == t]
+            type_to_category[t.id] = category_list
+
+        return json.dumps(type_to_category)
 
 
 @method_decorator(login_required, name="dispatch")
-class AddSingleTransactionView(View):
+class AddSingleTransactionView(View, TransactionMixin):
     template_name = "transaction/add_transaction_single.html"
     form_class = AddSingleTransactionForm
 
@@ -49,19 +97,9 @@ class AddSingleTransactionView(View):
 
         return render(request, self.template_name, self.get_context(request, form))
 
-    def get_context(self, request, form=None):
-        # Helper method to generate a dictionary with data to pass to the template
-        context = {}
-        if form:
-            context["form"] = form
-        else:
-            context["form"] = self.form_class()
-        context["back_url"] = request.GET.get("back_url", "/transactions/")
-        return context
-
 
 @method_decorator(login_required, name="dispatch")
-class AddRepeatableTransactionView(View):
+class AddRepeatableTransactionView(View, TransactionMixin):
     template_name = "transaction/add_transaction_repeatable.html"
     form_class = AddRepeatableTransactionForm
 
@@ -96,16 +134,6 @@ class AddRepeatableTransactionView(View):
 
         return render(request, self.template_name, self.get_context(request, form=form))
 
-    def get_context(self, request, form=None):
-        # Helper method to generate a dictionary with data to pass to the template
-        context = {}
-        if form:
-            context["form"] = form
-        else:
-            context["form"] = self.form_class()
-        context["back_url"] = request.GET.get("back_url", "/transactions/")
-        return context
-
 
 @method_decorator(login_required, name="dispatch")
 class TransactionTableView(View):
@@ -121,11 +149,17 @@ class TransactionTableView(View):
 
 
 @method_decorator(login_required, name="dispatch")
-class TransactionUpdateView(UpdateView):
+class TransactionUpdateView(UpdateView, TransactionMixin):
     model = Transaction
     form_class = AddSingleTransactionForm
     template_name = "transaction/edit_single.html"
     success_url = reverse_lazy("transactions:transactions")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["back_url"] = self.request.GET.get("back_url", "/transactions/")
+        context["type_to_category"] = self.get_categories(self.request)
+        return context
 
 
 def delete_transactions(request) -> JsonResponse[dict]:

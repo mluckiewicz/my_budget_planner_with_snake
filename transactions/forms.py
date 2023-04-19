@@ -2,7 +2,6 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 from djmoney.forms.widgets import MoneyWidget
-
 from .models import RepeatableTransaction, Transaction
 
 
@@ -25,13 +24,13 @@ class AddSingleTransactionForm(forms.ModelForm):
             "budget",
         )
         labels = {
-            "type": _("Typ"),
-            "amount": _("Kwota"),
-            "category": _("Kategoria"),
-            "budget": _("Budżet"),
-            "execution_date": _("Data realizacji"),
-            "is_executed": _("Zrealizowana?"),
-            "description": _("Opis")
+            "type": _("Type"),
+            "amount": _("Amount"),
+            "category": _("Category"),
+            "budget": _("Budget"),
+            "execution_date": _("Execution date"),
+            "is_executed": _("Is executed?"),
+            "description": _("Description")
         }
         widgets = {
             "type": forms.widgets.Select(attrs={"required": True}),
@@ -40,7 +39,7 @@ class AddSingleTransactionForm(forms.ModelForm):
                     attrs={
                         "min":0,
                         "step":0.01,
-                        "placeholder": _("Wprowadź kwotę"),
+                        "placeholder": _("Amount"),
                         "class": "form-control"},
                     
                 ),
@@ -51,8 +50,8 @@ class AddSingleTransactionForm(forms.ModelForm):
                 ),
             "description": forms.widgets.Textarea(attrs={"rows": "3"})
         }
-
-
+        
+            
 class AddRepeatableTransactionForm(forms.ModelForm):
     class Meta:
         model = RepeatableTransaction
