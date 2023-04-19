@@ -6,12 +6,12 @@
 
 {% block content %}
 
-    <div class="container-fluid h-10">
+    <div class="container-fluid h-100">
         <div class="row justify-content-center align-items-center h-100">
             <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3">
                 <div class="mb-4 border-bottom solid">
                     <i class="bi bi-piggy-bank fs-2">&nbsp;</i>
-                    <span class="fs-2"><b>BUDGET</b>PLANNER</a></span>
+                    <span class="fs-2"><b>BUDGET</b>PLANNER</span>
                 </div>
                 <h1>User profile</h1>
                 <form method="POST" action="">
@@ -40,6 +40,7 @@
 
                     <div class="form-group d-grid gap-2 mb-3">
                         <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit profile</a>
+
                     </div>
                 </form>
             </div>
