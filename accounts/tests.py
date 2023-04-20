@@ -1,9 +1,7 @@
 from django.test import TestCase, Client
 from django.urls import reverse_lazy
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import AnonymousUser
-from .forms import UserRegistrationForm
-from .views import register, AuthRedirectView, AuthLoginview
+from .views import AuthRedirectView, AuthLoginview
 
 
 class AuthRedirectViewTest(TestCase):
