@@ -12,6 +12,7 @@ urlpatterns = [
         views.DashboardView.as_view(),
         name="dashboard",
     ),
-    path('data/', views.data, name='data'),
+    path('calendar_data/', views.calendar_data, name='calendar_data'),
+    path('get_pending_list/', views.get_pending_list, name='get_pending_list')
 
 ]
