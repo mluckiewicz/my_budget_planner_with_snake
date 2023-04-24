@@ -49,12 +49,12 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-3">
+        <div class="col-4">
             <div class="p-3 bg-white border border-light rounded shadow">
-                Pending list
+                <div id="pending_list"></div>
             </div>
         </div>
-        <div class="col-9">
+        <div class="col-8">
             <div class="p-3 bg-white border border-light rounded shadow">
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -85,6 +85,7 @@
 
         </div>
     </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
@@ -97,7 +98,7 @@
                 },
                 selectable: true,
                 initialView: 'dayGridMonth',
-                events: '{% url "dashboard:data" %}',
+                events: '{% url "dashboard:calendar_data" %}',
 
                 eventClick: function (info) {
                     var modalEditForm = document.getElementById('editForm')
@@ -128,5 +129,38 @@
             eventModal.style.display = 'none';
         });
 
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        // Script to liad json respoinse to pending list
+        $(document).ready(function() {
+            $.ajax({
+                url: 'get_pending_list/',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var today = new Date();                   
+                    var objects = data;
+                    var ol = $('<ol></ol>').addClass('list-group');
+                    $.each(objects, function(index, object) {
+                        var executionDate = new Date(object.execution_date);
+                        var li = $('<li></li>').addClass('list-group-item d-flex justify-content-between align-items-start');
+                        var div1 = $('<div></div>').addClass('ms-2 me-auto').text(object.title + " | " + object.amount.amount + object.amount.currency + " | " + object.type).append($('<div></div>').append($('<div></div>').text(object.description)));
+                        // Change pill color if execution date is smaler then today.
+                        if (executionDate > today) {
+                            li.append(div1).append($('<span></span>').addClass('badge bg-primary rounded-pill').text(object.execution_date));
+                        } else {
+                            li.append(div1).append($('<span></span>').addClass('badge bg-danger rounded-pill').text(object.execution_date));
+                        }
+                        ol.append(li);
+                    });
+                    $('#pending_list').html(ol);
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        });
     </script>
     {% endblock content %}
