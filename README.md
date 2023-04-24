@@ -8,9 +8,13 @@
 
 
 ## General info
-This is a comprehensive application created using Python and the Django framework, which enables users to manage and keep track of their personal finances. It offers features that assist in monitoring income, expenses, and budgeting. Furthermore, it facilitates the analysis of financial trends over time by incorporating categories, 
+This is a comprehensive application created using Python and the Django framework, which enables users to manage and keep track of their personal finances. It offers features that assist in monitoring income, expenses, and budgeting. Furthermore, it facilitates the analysis of financial trends over time by incorporating categories. 
 
-The project was developed by a team of three individuals in less than 5 days, following the MVP (Minimum Viable Product) approach. This involved brainstorming business ideas, designing mechanics, and implementing frontend elements. Following a clear division of tasks, the team worked on bringing the developed concepts to life, resulting in the creation of this application. The MVP strategy allowed the team to focus on developing only the most essential features necessary to deliver value to early users, with the goal of quickly testing the market and gathering feedback with minimal investment of time and resources.
+The project was developed by a team of three individuals in less than 10 days, following the MVP (Minimum Viable Product) approach. This involved brainstorming business ideas, designing mechanics, and implementing frontend elements. Following a clear division of tasks, the team worked on bringing the developed concepts to life, resulting in the creation of this application. The MVP strategy allowed the team to focus on developing only the most essential features necessary to deliver value to early users, with the goal of quickly testing the market and gathering feedback with minimal investment of time and resources.
+
+## Demo
+
+If you want to check our app go to [Python](https://my-budget-planner-with-snake.onrender.com)
 
 ## Features
 The My budget planner with snake app includes the following features:

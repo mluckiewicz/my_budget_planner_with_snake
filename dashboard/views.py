@@ -61,7 +61,7 @@ def get_pending_list(request):
     Raises:
         None
     """
-    pending_transacion = Transaction.objects.filter(is_executed=False).order_by('execution_date')
+    pending_transacion = Transaction.objects.filter(is_executed=False, user=request.user).order_by('execution_date')
     data = []
     for transaction in pending_transacion:
         data.append({
