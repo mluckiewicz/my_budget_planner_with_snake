@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -88,12 +89,12 @@ WSGI_APPLICATION = 'my_budget_planner_with_snake.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    "default": dj_database_url.config(
+        # Feel free to alter this value to suit your needs.
+        default="postgres://budget_planner_db_q8ct_user:jVetd3eNjkSzhkPq1VWqFhbd4yHuPvCt@dpg-cgs41dg2qv20m9nemmhg-a.oregon-postgres.render.com/budget_planner_db_q8ct",
+        conn_max_age=600,
+    )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
