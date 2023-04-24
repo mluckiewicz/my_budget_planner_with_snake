@@ -118,12 +118,11 @@ class DateCalculator:
         :param recurrence_value: An optional integer representing the interval recurrence value, depending on the unit. For "daily" and "weekly" intervals, this value is ignored. For "monthly" intervals, this value represents the day of the month (1-31) on which to generate dates.
         :return: A list of datetime.date objects representing the generated dates.
         """
-        match unit.lower():
-            case "daily":
-                return self._generate_daily_dates()
-            case "weekly":
-                return self._generate_weekly_dates(recurrence_value)
-            case "monthly":
-                return self._generate_monthly_dates(recurrence_value)
-            case "quaterly":
-                return self._generate_quaterly_dates()
+        if unit.lower() == "daily":
+            return self._generate_daily_dates()
+        elif unit.lower() == "weekly":
+            return self._generate_weekly_dates(recurrence_value)
+        elif unit.lower() == "monthly":
+            return self._generate_monthly_dates(recurrence_value)
+        elif unit.lower() == "quaterly":
+            return self._generate_quaterly_dates()
