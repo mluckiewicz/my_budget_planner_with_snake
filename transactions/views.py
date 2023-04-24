@@ -42,15 +42,19 @@ class TransactionMixin:
             request: An HttpRequest object.
 
         Returns:
-            A JSON-formatted string representing a dictionary mapping transaction types 
+            A JSON-formatted string representing a dictionary mapping transaction types
             to lists of available categories.
         """
         types = Type.objects.all()
+        
+        # user categories union with default 
         user_categories = UserCategory.objects.filter(user=request.user)
-        categories = Category.objects.filter(
+        categories_user = Category.objects.filter(
             id__in=user_categories.values_list("category_id", flat=True)
         )
-
+        categories_default = Category.objects.filter(default=True)
+        categories = categories_user | categories_default
+        
         type_to_category = {}
         for t in types:
             category_list = [[c.id, c.category_name] for c in categories if c.type == t]
