@@ -14,26 +14,26 @@ const options = JSON.parse(type_to_category);
 
 // disable category fielad based on category fielad value
 if (typeSelect.value !== "") {
-    categorySelect.disabled = false
-    
-  } else {
-    categorySelect.disabled = true;
-    categorySelect.innerHTML = '';
-  }
+  categorySelect.disabled = false
+
+} else {
+  categorySelect.disabled = true;
+  categorySelect.innerHTML = '';
+}
 
 typeSelect.addEventListener("change", (event) => {
-    const selectedOption = event.target.value;
-    const availableOptions = options[selectedOption];
+  const selectedOption = event.target.value;
+  const availableOptions = options[selectedOption];
 
-    categorySelect.disabled = false 
+  categorySelect.disabled = false
 
-    if (availableOptions && Array.isArray(availableOptions)) {
-        const optionsHTML = availableOptions
-            .map((option) => `<option value="${option[0]}">${option[1]}</option>`)
-            .join("");
-            categorySelect.innerHTML = optionsHTML;
-    } else {
-        // handle case when availableOptions is not defined or not an array
-        console.log("Available options not defined or not an array.");
-    }
+  if (availableOptions && Array.isArray(availableOptions)) {
+    const optionsHTML = availableOptions
+      .map((option) => `<option value="${option[0]}">${option[1]}</option>`)
+      .join("");
+    categorySelect.innerHTML = optionsHTML;
+  } else {
+    // handle case when availableOptions is not defined or not an array
+    console.log("Available options not defined or not an array.");
+  }
 });
