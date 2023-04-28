@@ -64,7 +64,7 @@ class AuthRedirectView(RedirectView):
             return super().get_redirect_url(*args, **kwargs)
         
         
-class AuthLoginview(LoginView):
+class AuthLoginView(LoginView):
     """
     Displays the login page and logs the user in if valid credentials are submitted.
 

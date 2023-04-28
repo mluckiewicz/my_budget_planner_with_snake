@@ -1,13 +1,14 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
+from accounts.forms import EmailValidationOnForgotPassword
 
 
 urlpatterns = [
 
     path(
         "login/",
-        views.AuthLoginview.as_view(template_name="account/login.html"),
+        views.AuthLoginView.as_view(template_name="account/login.html"),
         name="login",
     ),
     path(
@@ -35,6 +36,7 @@ urlpatterns = [
          ),
 
     path("reset_password/", auth_views.PasswordResetView.as_view(
+            form_class=EmailValidationOnForgotPassword,
             template_name="account/password_reset.html"
         ),
         name="reset_password",
